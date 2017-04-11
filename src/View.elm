@@ -35,5 +35,5 @@ code c =
     case String.left 1 c of
         "" -> div [] []
         "$" -> div [ id "code" ] [ iframe [ src ("https://embed.ellie-app.com/" ++ (String.dropLeft 2 c) ++ "/" ++ (String.slice 1 2 c)) ] [] ]
-        "&" -> div [ id "code" ] [ iframe [ src ("https://embed.plnkr.co/" ++ (String.dropLeft 1 c)) ] [] ]
+        "&" -> div [ id "code" ] [ iframe [ src ("https://embed.plnkr.co/" ++ (String.dropLeft 1 c) ++ "/?show=script.js,script.jsx,app.ts,preview&autoCloseSidebar=true") ] [] ]
         _ -> div [ id "code" ] [ iframe [ src ("https://jsbin.com/" ++ c ++ "/latest/embed?js,console") ] [] ]
