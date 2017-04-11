@@ -11,8 +11,6 @@
     "css-loader": "^0.26.1",
     "elm-webpack-loader": "^4.2.0",
     "file-loader": "^0.10.0",
-    "font-awesome": "^4.7.0",
-    "shortcss": "git+https://lynqu.visualstudio.com/DefaultCollection/_git/shortcss",
     "style-loader": "^0.13.1",
     "url-loader": "^0.5.7",
     "webpack": "^2.2.1",
