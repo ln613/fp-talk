@@ -63,11 +63,41 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 17);
+/******/ 	return __webpack_require__(__webpack_require__.s = 7);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+__webpack_require__(6);
+
+__webpack_require__(4);
+
+var Elm = __webpack_require__(3);
+var mountNode = document.getElementById('main');
+
+var app = Elm.Main.embed(mountNode);
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(2)();
+// imports
+
+
+// module
+exports.push([module.i, "body {\r\n  margin: 0;\r\n  background-image: linear-gradient(to top right, black, lightgrey);\r\n  width: 100vw;\r\n  height: 100vh;\r\n  font-family: 'Ubuntu';\r\n  text-shadow: 2px 2px 3px #333;\r\n  color:  white\r\n}\r\n\r\n#header {\r\n  height: 20vh;\r\n  font-size: 3em;\r\n  line-height: 20vh;\r\n  vertical-align: middle;\r\n  text-align: center;\r\n  font-weight: bold;\r\n}\r\n\r\n#main1 {\r\n  width: 75vw;\r\n  height: 75vh;\r\n  margin: 0 auto;\r\n}\r\n\r\n#main1 div {\r\n  height: 10vh;\r\n  font-size: 2em;\r\n}\r\n\r\n#code {\r\n  width: 90vw;\r\n  height: 75vh;\r\n  margin: 0 auto;\r\n}\r\n\r\n#page {\r\n  position: absolute; \r\n  padding-right: 10px;\r\n  padding-bottom: 10px;\r\n  bottom: 0px;\r\n  right: 0px;\r\n}\r\n\r\niframe {\r\n  width: 100%;\r\n  height: 100%;    \r\n}\r\n\r\n.code5, .code6, .code51 {\r\n  font-family: 'Consolas';\r\n  font-size: 0.8em;\r\n}\r\n\r\n.code5, .code51 {\r\n  color: yellow;    \r\n}\r\n\r\n.code6 {\r\n  color: yellowgreen;    \r\n}\r\n\r\n.code51 {\r\n  padding-left: 50px;    \r\n}\r\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 2 */
 /***/ (function(module, exports) {
 
 /*
@@ -123,320 +153,7 @@ module.exports = function() {
 
 
 /***/ }),
-/* 1 */
-/***/ (function(module, exports) {
-
-/*
-	MIT License http://www.opensource.org/licenses/mit-license.php
-	Author Tobias Koppers @sokra
-*/
-var stylesInDom = {},
-	memoize = function(fn) {
-		var memo;
-		return function () {
-			if (typeof memo === "undefined") memo = fn.apply(this, arguments);
-			return memo;
-		};
-	},
-	isOldIE = memoize(function() {
-		return /msie [6-9]\b/.test(self.navigator.userAgent.toLowerCase());
-	}),
-	getHeadElement = memoize(function () {
-		return document.head || document.getElementsByTagName("head")[0];
-	}),
-	singletonElement = null,
-	singletonCounter = 0,
-	styleElementsInsertedAtTop = [];
-
-module.exports = function(list, options) {
-	if(typeof DEBUG !== "undefined" && DEBUG) {
-		if(typeof document !== "object") throw new Error("The style-loader cannot be used in a non-browser environment");
-	}
-
-	options = options || {};
-	// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
-	// tags it will allow on a page
-	if (typeof options.singleton === "undefined") options.singleton = isOldIE();
-
-	// By default, add <style> tags to the bottom of <head>.
-	if (typeof options.insertAt === "undefined") options.insertAt = "bottom";
-
-	var styles = listToStyles(list);
-	addStylesToDom(styles, options);
-
-	return function update(newList) {
-		var mayRemove = [];
-		for(var i = 0; i < styles.length; i++) {
-			var item = styles[i];
-			var domStyle = stylesInDom[item.id];
-			domStyle.refs--;
-			mayRemove.push(domStyle);
-		}
-		if(newList) {
-			var newStyles = listToStyles(newList);
-			addStylesToDom(newStyles, options);
-		}
-		for(var i = 0; i < mayRemove.length; i++) {
-			var domStyle = mayRemove[i];
-			if(domStyle.refs === 0) {
-				for(var j = 0; j < domStyle.parts.length; j++)
-					domStyle.parts[j]();
-				delete stylesInDom[domStyle.id];
-			}
-		}
-	};
-}
-
-function addStylesToDom(styles, options) {
-	for(var i = 0; i < styles.length; i++) {
-		var item = styles[i];
-		var domStyle = stylesInDom[item.id];
-		if(domStyle) {
-			domStyle.refs++;
-			for(var j = 0; j < domStyle.parts.length; j++) {
-				domStyle.parts[j](item.parts[j]);
-			}
-			for(; j < item.parts.length; j++) {
-				domStyle.parts.push(addStyle(item.parts[j], options));
-			}
-		} else {
-			var parts = [];
-			for(var j = 0; j < item.parts.length; j++) {
-				parts.push(addStyle(item.parts[j], options));
-			}
-			stylesInDom[item.id] = {id: item.id, refs: 1, parts: parts};
-		}
-	}
-}
-
-function listToStyles(list) {
-	var styles = [];
-	var newStyles = {};
-	for(var i = 0; i < list.length; i++) {
-		var item = list[i];
-		var id = item[0];
-		var css = item[1];
-		var media = item[2];
-		var sourceMap = item[3];
-		var part = {css: css, media: media, sourceMap: sourceMap};
-		if(!newStyles[id])
-			styles.push(newStyles[id] = {id: id, parts: [part]});
-		else
-			newStyles[id].parts.push(part);
-	}
-	return styles;
-}
-
-function insertStyleElement(options, styleElement) {
-	var head = getHeadElement();
-	var lastStyleElementInsertedAtTop = styleElementsInsertedAtTop[styleElementsInsertedAtTop.length - 1];
-	if (options.insertAt === "top") {
-		if(!lastStyleElementInsertedAtTop) {
-			head.insertBefore(styleElement, head.firstChild);
-		} else if(lastStyleElementInsertedAtTop.nextSibling) {
-			head.insertBefore(styleElement, lastStyleElementInsertedAtTop.nextSibling);
-		} else {
-			head.appendChild(styleElement);
-		}
-		styleElementsInsertedAtTop.push(styleElement);
-	} else if (options.insertAt === "bottom") {
-		head.appendChild(styleElement);
-	} else {
-		throw new Error("Invalid value for parameter 'insertAt'. Must be 'top' or 'bottom'.");
-	}
-}
-
-function removeStyleElement(styleElement) {
-	styleElement.parentNode.removeChild(styleElement);
-	var idx = styleElementsInsertedAtTop.indexOf(styleElement);
-	if(idx >= 0) {
-		styleElementsInsertedAtTop.splice(idx, 1);
-	}
-}
-
-function createStyleElement(options) {
-	var styleElement = document.createElement("style");
-	styleElement.type = "text/css";
-	insertStyleElement(options, styleElement);
-	return styleElement;
-}
-
-function createLinkElement(options) {
-	var linkElement = document.createElement("link");
-	linkElement.rel = "stylesheet";
-	insertStyleElement(options, linkElement);
-	return linkElement;
-}
-
-function addStyle(obj, options) {
-	var styleElement, update, remove;
-
-	if (options.singleton) {
-		var styleIndex = singletonCounter++;
-		styleElement = singletonElement || (singletonElement = createStyleElement(options));
-		update = applyToSingletonTag.bind(null, styleElement, styleIndex, false);
-		remove = applyToSingletonTag.bind(null, styleElement, styleIndex, true);
-	} else if(obj.sourceMap &&
-		typeof URL === "function" &&
-		typeof URL.createObjectURL === "function" &&
-		typeof URL.revokeObjectURL === "function" &&
-		typeof Blob === "function" &&
-		typeof btoa === "function") {
-		styleElement = createLinkElement(options);
-		update = updateLink.bind(null, styleElement);
-		remove = function() {
-			removeStyleElement(styleElement);
-			if(styleElement.href)
-				URL.revokeObjectURL(styleElement.href);
-		};
-	} else {
-		styleElement = createStyleElement(options);
-		update = applyToTag.bind(null, styleElement);
-		remove = function() {
-			removeStyleElement(styleElement);
-		};
-	}
-
-	update(obj);
-
-	return function updateStyle(newObj) {
-		if(newObj) {
-			if(newObj.css === obj.css && newObj.media === obj.media && newObj.sourceMap === obj.sourceMap)
-				return;
-			update(obj = newObj);
-		} else {
-			remove();
-		}
-	};
-}
-
-var replaceText = (function () {
-	var textStore = [];
-
-	return function (index, replacement) {
-		textStore[index] = replacement;
-		return textStore.filter(Boolean).join('\n');
-	};
-})();
-
-function applyToSingletonTag(styleElement, index, remove, obj) {
-	var css = remove ? "" : obj.css;
-
-	if (styleElement.styleSheet) {
-		styleElement.styleSheet.cssText = replaceText(index, css);
-	} else {
-		var cssNode = document.createTextNode(css);
-		var childNodes = styleElement.childNodes;
-		if (childNodes[index]) styleElement.removeChild(childNodes[index]);
-		if (childNodes.length) {
-			styleElement.insertBefore(cssNode, childNodes[index]);
-		} else {
-			styleElement.appendChild(cssNode);
-		}
-	}
-}
-
-function applyToTag(styleElement, obj) {
-	var css = obj.css;
-	var media = obj.media;
-
-	if(media) {
-		styleElement.setAttribute("media", media)
-	}
-
-	if(styleElement.styleSheet) {
-		styleElement.styleSheet.cssText = css;
-	} else {
-		while(styleElement.firstChild) {
-			styleElement.removeChild(styleElement.firstChild);
-		}
-		styleElement.appendChild(document.createTextNode(css));
-	}
-}
-
-function updateLink(linkElement, obj) {
-	var css = obj.css;
-	var sourceMap = obj.sourceMap;
-
-	if(sourceMap) {
-		// http://stackoverflow.com/a/26603875
-		css += "\n/*# sourceMappingURL=data:application/json;base64," + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + " */";
-	}
-
-	var blob = new Blob([css], { type: "text/css" });
-
-	var oldSrc = linkElement.href;
-
-	linkElement.href = URL.createObjectURL(blob);
-
-	if(oldSrc)
-		URL.revokeObjectURL(oldSrc);
-}
-
-
-/***/ }),
-/* 2 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-//require('ace-css/css/ace.css');
-__webpack_require__(12);
-__webpack_require__(13);
-__webpack_require__(14);
-
-__webpack_require__(11);
-
-var Elm = __webpack_require__(6);
-var mountNode = document.getElementById('main');
-
-var app = Elm.Main.embed(mountNode);
-
-/***/ }),
 /* 3 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(0)();
-// imports
-
-
-// module
-exports.push([module.i, "/*!\n *  Font Awesome 4.7.0 by @davegandy - http://fontawesome.io - @fontawesome\n *  License - http://fontawesome.io/license (Font: SIL OFL 1.1, CSS: MIT License)\n */\n/* FONT PATH\n * -------------------------- */\n@font-face {\n  font-family: 'FontAwesome';\n  src: url(" + __webpack_require__(8) + ");\n  src: url(" + __webpack_require__(7) + "?#iefix&v=4.7.0) format('embedded-opentype'), url(" + __webpack_require__(15) + ") format('woff2'), url(" + __webpack_require__(16) + ") format('woff'), url(" + __webpack_require__(10) + ") format('truetype'), url(" + __webpack_require__(9) + "#fontawesomeregular) format('svg');\n  font-weight: normal;\n  font-style: normal;\n}\n.fa {\n  display: inline-block;\n  font: normal normal normal 14px/1 FontAwesome;\n  font-size: inherit;\n  text-rendering: auto;\n  -webkit-font-smoothing: antialiased;\n  -moz-osx-font-smoothing: grayscale;\n}\n/* makes the font 33% larger relative to the icon container */\n.fa-lg {\n  font-size: 1.33333333em;\n  line-height: 0.75em;\n  vertical-align: -15%;\n}\n.fa-2x {\n  font-size: 2em;\n}\n.fa-3x {\n  font-size: 3em;\n}\n.fa-4x {\n  font-size: 4em;\n}\n.fa-5x {\n  font-size: 5em;\n}\n.fa-fw {\n  width: 1.28571429em;\n  text-align: center;\n}\n.fa-ul {\n  padding-left: 0;\n  margin-left: 2.14285714em;\n  list-style-type: none;\n}\n.fa-ul > li {\n  position: relative;\n}\n.fa-li {\n  position: absolute;\n  left: -2.14285714em;\n  width: 2.14285714em;\n  top: 0.14285714em;\n  text-align: center;\n}\n.fa-li.fa-lg {\n  left: -1.85714286em;\n}\n.fa-border {\n  padding: .2em .25em .15em;\n  border: solid 0.08em #eeeeee;\n  border-radius: .1em;\n}\n.fa-pull-left {\n  float: left;\n}\n.fa-pull-right {\n  float: right;\n}\n.fa.fa-pull-left {\n  margin-right: .3em;\n}\n.fa.fa-pull-right {\n  margin-left: .3em;\n}\n/* Deprecated as of 4.4.0 */\n.pull-right {\n  float: right;\n}\n.pull-left {\n  float: left;\n}\n.fa.pull-left {\n  margin-right: .3em;\n}\n.fa.pull-right {\n  margin-left: .3em;\n}\n.fa-spin {\n  -webkit-animation: fa-spin 2s infinite linear;\n  animation: fa-spin 2s infinite linear;\n}\n.fa-pulse {\n  -webkit-animation: fa-spin 1s infinite steps(8);\n  animation: fa-spin 1s infinite steps(8);\n}\n@-webkit-keyframes fa-spin {\n  0% {\n    -webkit-transform: rotate(0deg);\n    transform: rotate(0deg);\n  }\n  100% {\n    -webkit-transform: rotate(359deg);\n    transform: rotate(359deg);\n  }\n}\n@keyframes fa-spin {\n  0% {\n    -webkit-transform: rotate(0deg);\n    transform: rotate(0deg);\n  }\n  100% {\n    -webkit-transform: rotate(359deg);\n    transform: rotate(359deg);\n  }\n}\n.fa-rotate-90 {\n  -ms-filter: \"progid:DXImageTransform.Microsoft.BasicImage(rotation=1)\";\n  -webkit-transform: rotate(90deg);\n  -ms-transform: rotate(90deg);\n  transform: rotate(90deg);\n}\n.fa-rotate-180 {\n  -ms-filter: \"progid:DXImageTransform.Microsoft.BasicImage(rotation=2)\";\n  -webkit-transform: rotate(180deg);\n  -ms-transform: rotate(180deg);\n  transform: rotate(180deg);\n}\n.fa-rotate-270 {\n  -ms-filter: \"progid:DXImageTransform.Microsoft.BasicImage(rotation=3)\";\n  -webkit-transform: rotate(270deg);\n  -ms-transform: rotate(270deg);\n  transform: rotate(270deg);\n}\n.fa-flip-horizontal {\n  -ms-filter: \"progid:DXImageTransform.Microsoft.BasicImage(rotation=0, mirror=1)\";\n  -webkit-transform: scale(-1, 1);\n  -ms-transform: scale(-1, 1);\n  transform: scale(-1, 1);\n}\n.fa-flip-vertical {\n  -ms-filter: \"progid:DXImageTransform.Microsoft.BasicImage(rotation=2, mirror=1)\";\n  -webkit-transform: scale(1, -1);\n  -ms-transform: scale(1, -1);\n  transform: scale(1, -1);\n}\n:root .fa-rotate-90,\n:root .fa-rotate-180,\n:root .fa-rotate-270,\n:root .fa-flip-horizontal,\n:root .fa-flip-vertical {\n  filter: none;\n}\n.fa-stack {\n  position: relative;\n  display: inline-block;\n  width: 2em;\n  height: 2em;\n  line-height: 2em;\n  vertical-align: middle;\n}\n.fa-stack-1x,\n.fa-stack-2x {\n  position: absolute;\n  left: 0;\n  width: 100%;\n  text-align: center;\n}\n.fa-stack-1x {\n  line-height: inherit;\n}\n.fa-stack-2x {\n  font-size: 2em;\n}\n.fa-inverse {\n  color: #ffffff;\n}\n/* Font Awesome uses the Unicode Private Use Area (PUA) to ensure screen\n   readers do not read off random characters that represent icons */\n.fa-glass:before {\n  content: \"\\F000\";\n}\n.fa-music:before {\n  content: \"\\F001\";\n}\n.fa-search:before {\n  content: \"\\F002\";\n}\n.fa-envelope-o:before {\n  content: \"\\F003\";\n}\n.fa-heart:before {\n  content: \"\\F004\";\n}\n.fa-star:before {\n  content: \"\\F005\";\n}\n.fa-star-o:before {\n  content: \"\\F006\";\n}\n.fa-user:before {\n  content: \"\\F007\";\n}\n.fa-film:before {\n  content: \"\\F008\";\n}\n.fa-th-large:before {\n  content: \"\\F009\";\n}\n.fa-th:before {\n  content: \"\\F00A\";\n}\n.fa-th-list:before {\n  content: \"\\F00B\";\n}\n.fa-check:before {\n  content: \"\\F00C\";\n}\n.fa-remove:before,\n.fa-close:before,\n.fa-times:before {\n  content: \"\\F00D\";\n}\n.fa-search-plus:before {\n  content: \"\\F00E\";\n}\n.fa-search-minus:before {\n  content: \"\\F010\";\n}\n.fa-power-off:before {\n  content: \"\\F011\";\n}\n.fa-signal:before {\n  content: \"\\F012\";\n}\n.fa-gear:before,\n.fa-cog:before {\n  content: \"\\F013\";\n}\n.fa-trash-o:before {\n  content: \"\\F014\";\n}\n.fa-home:before {\n  content: \"\\F015\";\n}\n.fa-file-o:before {\n  content: \"\\F016\";\n}\n.fa-clock-o:before {\n  content: \"\\F017\";\n}\n.fa-road:before {\n  content: \"\\F018\";\n}\n.fa-download:before {\n  content: \"\\F019\";\n}\n.fa-arrow-circle-o-down:before {\n  content: \"\\F01A\";\n}\n.fa-arrow-circle-o-up:before {\n  content: \"\\F01B\";\n}\n.fa-inbox:before {\n  content: \"\\F01C\";\n}\n.fa-play-circle-o:before {\n  content: \"\\F01D\";\n}\n.fa-rotate-right:before,\n.fa-repeat:before {\n  content: \"\\F01E\";\n}\n.fa-refresh:before {\n  content: \"\\F021\";\n}\n.fa-list-alt:before {\n  content: \"\\F022\";\n}\n.fa-lock:before {\n  content: \"\\F023\";\n}\n.fa-flag:before {\n  content: \"\\F024\";\n}\n.fa-headphones:before {\n  content: \"\\F025\";\n}\n.fa-volume-off:before {\n  content: \"\\F026\";\n}\n.fa-volume-down:before {\n  content: \"\\F027\";\n}\n.fa-volume-up:before {\n  content: \"\\F028\";\n}\n.fa-qrcode:before {\n  content: \"\\F029\";\n}\n.fa-barcode:before {\n  content: \"\\F02A\";\n}\n.fa-tag:before {\n  content: \"\\F02B\";\n}\n.fa-tags:before {\n  content: \"\\F02C\";\n}\n.fa-book:before {\n  content: \"\\F02D\";\n}\n.fa-bookmark:before {\n  content: \"\\F02E\";\n}\n.fa-print:before {\n  content: \"\\F02F\";\n}\n.fa-camera:before {\n  content: \"\\F030\";\n}\n.fa-font:before {\n  content: \"\\F031\";\n}\n.fa-bold:before {\n  content: \"\\F032\";\n}\n.fa-italic:before {\n  content: \"\\F033\";\n}\n.fa-text-height:before {\n  content: \"\\F034\";\n}\n.fa-text-width:before {\n  content: \"\\F035\";\n}\n.fa-align-left:before {\n  content: \"\\F036\";\n}\n.fa-align-center:before {\n  content: \"\\F037\";\n}\n.fa-align-right:before {\n  content: \"\\F038\";\n}\n.fa-align-justify:before {\n  content: \"\\F039\";\n}\n.fa-list:before {\n  content: \"\\F03A\";\n}\n.fa-dedent:before,\n.fa-outdent:before {\n  content: \"\\F03B\";\n}\n.fa-indent:before {\n  content: \"\\F03C\";\n}\n.fa-video-camera:before {\n  content: \"\\F03D\";\n}\n.fa-photo:before,\n.fa-image:before,\n.fa-picture-o:before {\n  content: \"\\F03E\";\n}\n.fa-pencil:before {\n  content: \"\\F040\";\n}\n.fa-map-marker:before {\n  content: \"\\F041\";\n}\n.fa-adjust:before {\n  content: \"\\F042\";\n}\n.fa-tint:before {\n  content: \"\\F043\";\n}\n.fa-edit:before,\n.fa-pencil-square-o:before {\n  content: \"\\F044\";\n}\n.fa-share-square-o:before {\n  content: \"\\F045\";\n}\n.fa-check-square-o:before {\n  content: \"\\F046\";\n}\n.fa-arrows:before {\n  content: \"\\F047\";\n}\n.fa-step-backward:before {\n  content: \"\\F048\";\n}\n.fa-fast-backward:before {\n  content: \"\\F049\";\n}\n.fa-backward:before {\n  content: \"\\F04A\";\n}\n.fa-play:before {\n  content: \"\\F04B\";\n}\n.fa-pause:before {\n  content: \"\\F04C\";\n}\n.fa-stop:before {\n  content: \"\\F04D\";\n}\n.fa-forward:before {\n  content: \"\\F04E\";\n}\n.fa-fast-forward:before {\n  content: \"\\F050\";\n}\n.fa-step-forward:before {\n  content: \"\\F051\";\n}\n.fa-eject:before {\n  content: \"\\F052\";\n}\n.fa-chevron-left:before {\n  content: \"\\F053\";\n}\n.fa-chevron-right:before {\n  content: \"\\F054\";\n}\n.fa-plus-circle:before {\n  content: \"\\F055\";\n}\n.fa-minus-circle:before {\n  content: \"\\F056\";\n}\n.fa-times-circle:before {\n  content: \"\\F057\";\n}\n.fa-check-circle:before {\n  content: \"\\F058\";\n}\n.fa-question-circle:before {\n  content: \"\\F059\";\n}\n.fa-info-circle:before {\n  content: \"\\F05A\";\n}\n.fa-crosshairs:before {\n  content: \"\\F05B\";\n}\n.fa-times-circle-o:before {\n  content: \"\\F05C\";\n}\n.fa-check-circle-o:before {\n  content: \"\\F05D\";\n}\n.fa-ban:before {\n  content: \"\\F05E\";\n}\n.fa-arrow-left:before {\n  content: \"\\F060\";\n}\n.fa-arrow-right:before {\n  content: \"\\F061\";\n}\n.fa-arrow-up:before {\n  content: \"\\F062\";\n}\n.fa-arrow-down:before {\n  content: \"\\F063\";\n}\n.fa-mail-forward:before,\n.fa-share:before {\n  content: \"\\F064\";\n}\n.fa-expand:before {\n  content: \"\\F065\";\n}\n.fa-compress:before {\n  content: \"\\F066\";\n}\n.fa-plus:before {\n  content: \"\\F067\";\n}\n.fa-minus:before {\n  content: \"\\F068\";\n}\n.fa-asterisk:before {\n  content: \"\\F069\";\n}\n.fa-exclamation-circle:before {\n  content: \"\\F06A\";\n}\n.fa-gift:before {\n  content: \"\\F06B\";\n}\n.fa-leaf:before {\n  content: \"\\F06C\";\n}\n.fa-fire:before {\n  content: \"\\F06D\";\n}\n.fa-eye:before {\n  content: \"\\F06E\";\n}\n.fa-eye-slash:before {\n  content: \"\\F070\";\n}\n.fa-warning:before,\n.fa-exclamation-triangle:before {\n  content: \"\\F071\";\n}\n.fa-plane:before {\n  content: \"\\F072\";\n}\n.fa-calendar:before {\n  content: \"\\F073\";\n}\n.fa-random:before {\n  content: \"\\F074\";\n}\n.fa-comment:before {\n  content: \"\\F075\";\n}\n.fa-magnet:before {\n  content: \"\\F076\";\n}\n.fa-chevron-up:before {\n  content: \"\\F077\";\n}\n.fa-chevron-down:before {\n  content: \"\\F078\";\n}\n.fa-retweet:before {\n  content: \"\\F079\";\n}\n.fa-shopping-cart:before {\n  content: \"\\F07A\";\n}\n.fa-folder:before {\n  content: \"\\F07B\";\n}\n.fa-folder-open:before {\n  content: \"\\F07C\";\n}\n.fa-arrows-v:before {\n  content: \"\\F07D\";\n}\n.fa-arrows-h:before {\n  content: \"\\F07E\";\n}\n.fa-bar-chart-o:before,\n.fa-bar-chart:before {\n  content: \"\\F080\";\n}\n.fa-twitter-square:before {\n  content: \"\\F081\";\n}\n.fa-facebook-square:before {\n  content: \"\\F082\";\n}\n.fa-camera-retro:before {\n  content: \"\\F083\";\n}\n.fa-key:before {\n  content: \"\\F084\";\n}\n.fa-gears:before,\n.fa-cogs:before {\n  content: \"\\F085\";\n}\n.fa-comments:before {\n  content: \"\\F086\";\n}\n.fa-thumbs-o-up:before {\n  content: \"\\F087\";\n}\n.fa-thumbs-o-down:before {\n  content: \"\\F088\";\n}\n.fa-star-half:before {\n  content: \"\\F089\";\n}\n.fa-heart-o:before {\n  content: \"\\F08A\";\n}\n.fa-sign-out:before {\n  content: \"\\F08B\";\n}\n.fa-linkedin-square:before {\n  content: \"\\F08C\";\n}\n.fa-thumb-tack:before {\n  content: \"\\F08D\";\n}\n.fa-external-link:before {\n  content: \"\\F08E\";\n}\n.fa-sign-in:before {\n  content: \"\\F090\";\n}\n.fa-trophy:before {\n  content: \"\\F091\";\n}\n.fa-github-square:before {\n  content: \"\\F092\";\n}\n.fa-upload:before {\n  content: \"\\F093\";\n}\n.fa-lemon-o:before {\n  content: \"\\F094\";\n}\n.fa-phone:before {\n  content: \"\\F095\";\n}\n.fa-square-o:before {\n  content: \"\\F096\";\n}\n.fa-bookmark-o:before {\n  content: \"\\F097\";\n}\n.fa-phone-square:before {\n  content: \"\\F098\";\n}\n.fa-twitter:before {\n  content: \"\\F099\";\n}\n.fa-facebook-f:before,\n.fa-facebook:before {\n  content: \"\\F09A\";\n}\n.fa-github:before {\n  content: \"\\F09B\";\n}\n.fa-unlock:before {\n  content: \"\\F09C\";\n}\n.fa-credit-card:before {\n  content: \"\\F09D\";\n}\n.fa-feed:before,\n.fa-rss:before {\n  content: \"\\F09E\";\n}\n.fa-hdd-o:before {\n  content: \"\\F0A0\";\n}\n.fa-bullhorn:before {\n  content: \"\\F0A1\";\n}\n.fa-bell:before {\n  content: \"\\F0F3\";\n}\n.fa-certificate:before {\n  content: \"\\F0A3\";\n}\n.fa-hand-o-right:before {\n  content: \"\\F0A4\";\n}\n.fa-hand-o-left:before {\n  content: \"\\F0A5\";\n}\n.fa-hand-o-up:before {\n  content: \"\\F0A6\";\n}\n.fa-hand-o-down:before {\n  content: \"\\F0A7\";\n}\n.fa-arrow-circle-left:before {\n  content: \"\\F0A8\";\n}\n.fa-arrow-circle-right:before {\n  content: \"\\F0A9\";\n}\n.fa-arrow-circle-up:before {\n  content: \"\\F0AA\";\n}\n.fa-arrow-circle-down:before {\n  content: \"\\F0AB\";\n}\n.fa-globe:before {\n  content: \"\\F0AC\";\n}\n.fa-wrench:before {\n  content: \"\\F0AD\";\n}\n.fa-tasks:before {\n  content: \"\\F0AE\";\n}\n.fa-filter:before {\n  content: \"\\F0B0\";\n}\n.fa-briefcase:before {\n  content: \"\\F0B1\";\n}\n.fa-arrows-alt:before {\n  content: \"\\F0B2\";\n}\n.fa-group:before,\n.fa-users:before {\n  content: \"\\F0C0\";\n}\n.fa-chain:before,\n.fa-link:before {\n  content: \"\\F0C1\";\n}\n.fa-cloud:before {\n  content: \"\\F0C2\";\n}\n.fa-flask:before {\n  content: \"\\F0C3\";\n}\n.fa-cut:before,\n.fa-scissors:before {\n  content: \"\\F0C4\";\n}\n.fa-copy:before,\n.fa-files-o:before {\n  content: \"\\F0C5\";\n}\n.fa-paperclip:before {\n  content: \"\\F0C6\";\n}\n.fa-save:before,\n.fa-floppy-o:before {\n  content: \"\\F0C7\";\n}\n.fa-square:before {\n  content: \"\\F0C8\";\n}\n.fa-navicon:before,\n.fa-reorder:before,\n.fa-bars:before {\n  content: \"\\F0C9\";\n}\n.fa-list-ul:before {\n  content: \"\\F0CA\";\n}\n.fa-list-ol:before {\n  content: \"\\F0CB\";\n}\n.fa-strikethrough:before {\n  content: \"\\F0CC\";\n}\n.fa-underline:before {\n  content: \"\\F0CD\";\n}\n.fa-table:before {\n  content: \"\\F0CE\";\n}\n.fa-magic:before {\n  content: \"\\F0D0\";\n}\n.fa-truck:before {\n  content: \"\\F0D1\";\n}\n.fa-pinterest:before {\n  content: \"\\F0D2\";\n}\n.fa-pinterest-square:before {\n  content: \"\\F0D3\";\n}\n.fa-google-plus-square:before {\n  content: \"\\F0D4\";\n}\n.fa-google-plus:before {\n  content: \"\\F0D5\";\n}\n.fa-money:before {\n  content: \"\\F0D6\";\n}\n.fa-caret-down:before {\n  content: \"\\F0D7\";\n}\n.fa-caret-up:before {\n  content: \"\\F0D8\";\n}\n.fa-caret-left:before {\n  content: \"\\F0D9\";\n}\n.fa-caret-right:before {\n  content: \"\\F0DA\";\n}\n.fa-columns:before {\n  content: \"\\F0DB\";\n}\n.fa-unsorted:before,\n.fa-sort:before {\n  content: \"\\F0DC\";\n}\n.fa-sort-down:before,\n.fa-sort-desc:before {\n  content: \"\\F0DD\";\n}\n.fa-sort-up:before,\n.fa-sort-asc:before {\n  content: \"\\F0DE\";\n}\n.fa-envelope:before {\n  content: \"\\F0E0\";\n}\n.fa-linkedin:before {\n  content: \"\\F0E1\";\n}\n.fa-rotate-left:before,\n.fa-undo:before {\n  content: \"\\F0E2\";\n}\n.fa-legal:before,\n.fa-gavel:before {\n  content: \"\\F0E3\";\n}\n.fa-dashboard:before,\n.fa-tachometer:before {\n  content: \"\\F0E4\";\n}\n.fa-comment-o:before {\n  content: \"\\F0E5\";\n}\n.fa-comments-o:before {\n  content: \"\\F0E6\";\n}\n.fa-flash:before,\n.fa-bolt:before {\n  content: \"\\F0E7\";\n}\n.fa-sitemap:before {\n  content: \"\\F0E8\";\n}\n.fa-umbrella:before {\n  content: \"\\F0E9\";\n}\n.fa-paste:before,\n.fa-clipboard:before {\n  content: \"\\F0EA\";\n}\n.fa-lightbulb-o:before {\n  content: \"\\F0EB\";\n}\n.fa-exchange:before {\n  content: \"\\F0EC\";\n}\n.fa-cloud-download:before {\n  content: \"\\F0ED\";\n}\n.fa-cloud-upload:before {\n  content: \"\\F0EE\";\n}\n.fa-user-md:before {\n  content: \"\\F0F0\";\n}\n.fa-stethoscope:before {\n  content: \"\\F0F1\";\n}\n.fa-suitcase:before {\n  content: \"\\F0F2\";\n}\n.fa-bell-o:before {\n  content: \"\\F0A2\";\n}\n.fa-coffee:before {\n  content: \"\\F0F4\";\n}\n.fa-cutlery:before {\n  content: \"\\F0F5\";\n}\n.fa-file-text-o:before {\n  content: \"\\F0F6\";\n}\n.fa-building-o:before {\n  content: \"\\F0F7\";\n}\n.fa-hospital-o:before {\n  content: \"\\F0F8\";\n}\n.fa-ambulance:before {\n  content: \"\\F0F9\";\n}\n.fa-medkit:before {\n  content: \"\\F0FA\";\n}\n.fa-fighter-jet:before {\n  content: \"\\F0FB\";\n}\n.fa-beer:before {\n  content: \"\\F0FC\";\n}\n.fa-h-square:before {\n  content: \"\\F0FD\";\n}\n.fa-plus-square:before {\n  content: \"\\F0FE\";\n}\n.fa-angle-double-left:before {\n  content: \"\\F100\";\n}\n.fa-angle-double-right:before {\n  content: \"\\F101\";\n}\n.fa-angle-double-up:before {\n  content: \"\\F102\";\n}\n.fa-angle-double-down:before {\n  content: \"\\F103\";\n}\n.fa-angle-left:before {\n  content: \"\\F104\";\n}\n.fa-angle-right:before {\n  content: \"\\F105\";\n}\n.fa-angle-up:before {\n  content: \"\\F106\";\n}\n.fa-angle-down:before {\n  content: \"\\F107\";\n}\n.fa-desktop:before {\n  content: \"\\F108\";\n}\n.fa-laptop:before {\n  content: \"\\F109\";\n}\n.fa-tablet:before {\n  content: \"\\F10A\";\n}\n.fa-mobile-phone:before,\n.fa-mobile:before {\n  content: \"\\F10B\";\n}\n.fa-circle-o:before {\n  content: \"\\F10C\";\n}\n.fa-quote-left:before {\n  content: \"\\F10D\";\n}\n.fa-quote-right:before {\n  content: \"\\F10E\";\n}\n.fa-spinner:before {\n  content: \"\\F110\";\n}\n.fa-circle:before {\n  content: \"\\F111\";\n}\n.fa-mail-reply:before,\n.fa-reply:before {\n  content: \"\\F112\";\n}\n.fa-github-alt:before {\n  content: \"\\F113\";\n}\n.fa-folder-o:before {\n  content: \"\\F114\";\n}\n.fa-folder-open-o:before {\n  content: \"\\F115\";\n}\n.fa-smile-o:before {\n  content: \"\\F118\";\n}\n.fa-frown-o:before {\n  content: \"\\F119\";\n}\n.fa-meh-o:before {\n  content: \"\\F11A\";\n}\n.fa-gamepad:before {\n  content: \"\\F11B\";\n}\n.fa-keyboard-o:before {\n  content: \"\\F11C\";\n}\n.fa-flag-o:before {\n  content: \"\\F11D\";\n}\n.fa-flag-checkered:before {\n  content: \"\\F11E\";\n}\n.fa-terminal:before {\n  content: \"\\F120\";\n}\n.fa-code:before {\n  content: \"\\F121\";\n}\n.fa-mail-reply-all:before,\n.fa-reply-all:before {\n  content: \"\\F122\";\n}\n.fa-star-half-empty:before,\n.fa-star-half-full:before,\n.fa-star-half-o:before {\n  content: \"\\F123\";\n}\n.fa-location-arrow:before {\n  content: \"\\F124\";\n}\n.fa-crop:before {\n  content: \"\\F125\";\n}\n.fa-code-fork:before {\n  content: \"\\F126\";\n}\n.fa-unlink:before,\n.fa-chain-broken:before {\n  content: \"\\F127\";\n}\n.fa-question:before {\n  content: \"\\F128\";\n}\n.fa-info:before {\n  content: \"\\F129\";\n}\n.fa-exclamation:before {\n  content: \"\\F12A\";\n}\n.fa-superscript:before {\n  content: \"\\F12B\";\n}\n.fa-subscript:before {\n  content: \"\\F12C\";\n}\n.fa-eraser:before {\n  content: \"\\F12D\";\n}\n.fa-puzzle-piece:before {\n  content: \"\\F12E\";\n}\n.fa-microphone:before {\n  content: \"\\F130\";\n}\n.fa-microphone-slash:before {\n  content: \"\\F131\";\n}\n.fa-shield:before {\n  content: \"\\F132\";\n}\n.fa-calendar-o:before {\n  content: \"\\F133\";\n}\n.fa-fire-extinguisher:before {\n  content: \"\\F134\";\n}\n.fa-rocket:before {\n  content: \"\\F135\";\n}\n.fa-maxcdn:before {\n  content: \"\\F136\";\n}\n.fa-chevron-circle-left:before {\n  content: \"\\F137\";\n}\n.fa-chevron-circle-right:before {\n  content: \"\\F138\";\n}\n.fa-chevron-circle-up:before {\n  content: \"\\F139\";\n}\n.fa-chevron-circle-down:before {\n  content: \"\\F13A\";\n}\n.fa-html5:before {\n  content: \"\\F13B\";\n}\n.fa-css3:before {\n  content: \"\\F13C\";\n}\n.fa-anchor:before {\n  content: \"\\F13D\";\n}\n.fa-unlock-alt:before {\n  content: \"\\F13E\";\n}\n.fa-bullseye:before {\n  content: \"\\F140\";\n}\n.fa-ellipsis-h:before {\n  content: \"\\F141\";\n}\n.fa-ellipsis-v:before {\n  content: \"\\F142\";\n}\n.fa-rss-square:before {\n  content: \"\\F143\";\n}\n.fa-play-circle:before {\n  content: \"\\F144\";\n}\n.fa-ticket:before {\n  content: \"\\F145\";\n}\n.fa-minus-square:before {\n  content: \"\\F146\";\n}\n.fa-minus-square-o:before {\n  content: \"\\F147\";\n}\n.fa-level-up:before {\n  content: \"\\F148\";\n}\n.fa-level-down:before {\n  content: \"\\F149\";\n}\n.fa-check-square:before {\n  content: \"\\F14A\";\n}\n.fa-pencil-square:before {\n  content: \"\\F14B\";\n}\n.fa-external-link-square:before {\n  content: \"\\F14C\";\n}\n.fa-share-square:before {\n  content: \"\\F14D\";\n}\n.fa-compass:before {\n  content: \"\\F14E\";\n}\n.fa-toggle-down:before,\n.fa-caret-square-o-down:before {\n  content: \"\\F150\";\n}\n.fa-toggle-up:before,\n.fa-caret-square-o-up:before {\n  content: \"\\F151\";\n}\n.fa-toggle-right:before,\n.fa-caret-square-o-right:before {\n  content: \"\\F152\";\n}\n.fa-euro:before,\n.fa-eur:before {\n  content: \"\\F153\";\n}\n.fa-gbp:before {\n  content: \"\\F154\";\n}\n.fa-dollar:before,\n.fa-usd:before {\n  content: \"\\F155\";\n}\n.fa-rupee:before,\n.fa-inr:before {\n  content: \"\\F156\";\n}\n.fa-cny:before,\n.fa-rmb:before,\n.fa-yen:before,\n.fa-jpy:before {\n  content: \"\\F157\";\n}\n.fa-ruble:before,\n.fa-rouble:before,\n.fa-rub:before {\n  content: \"\\F158\";\n}\n.fa-won:before,\n.fa-krw:before {\n  content: \"\\F159\";\n}\n.fa-bitcoin:before,\n.fa-btc:before {\n  content: \"\\F15A\";\n}\n.fa-file:before {\n  content: \"\\F15B\";\n}\n.fa-file-text:before {\n  content: \"\\F15C\";\n}\n.fa-sort-alpha-asc:before {\n  content: \"\\F15D\";\n}\n.fa-sort-alpha-desc:before {\n  content: \"\\F15E\";\n}\n.fa-sort-amount-asc:before {\n  content: \"\\F160\";\n}\n.fa-sort-amount-desc:before {\n  content: \"\\F161\";\n}\n.fa-sort-numeric-asc:before {\n  content: \"\\F162\";\n}\n.fa-sort-numeric-desc:before {\n  content: \"\\F163\";\n}\n.fa-thumbs-up:before {\n  content: \"\\F164\";\n}\n.fa-thumbs-down:before {\n  content: \"\\F165\";\n}\n.fa-youtube-square:before {\n  content: \"\\F166\";\n}\n.fa-youtube:before {\n  content: \"\\F167\";\n}\n.fa-xing:before {\n  content: \"\\F168\";\n}\n.fa-xing-square:before {\n  content: \"\\F169\";\n}\n.fa-youtube-play:before {\n  content: \"\\F16A\";\n}\n.fa-dropbox:before {\n  content: \"\\F16B\";\n}\n.fa-stack-overflow:before {\n  content: \"\\F16C\";\n}\n.fa-instagram:before {\n  content: \"\\F16D\";\n}\n.fa-flickr:before {\n  content: \"\\F16E\";\n}\n.fa-adn:before {\n  content: \"\\F170\";\n}\n.fa-bitbucket:before {\n  content: \"\\F171\";\n}\n.fa-bitbucket-square:before {\n  content: \"\\F172\";\n}\n.fa-tumblr:before {\n  content: \"\\F173\";\n}\n.fa-tumblr-square:before {\n  content: \"\\F174\";\n}\n.fa-long-arrow-down:before {\n  content: \"\\F175\";\n}\n.fa-long-arrow-up:before {\n  content: \"\\F176\";\n}\n.fa-long-arrow-left:before {\n  content: \"\\F177\";\n}\n.fa-long-arrow-right:before {\n  content: \"\\F178\";\n}\n.fa-apple:before {\n  content: \"\\F179\";\n}\n.fa-windows:before {\n  content: \"\\F17A\";\n}\n.fa-android:before {\n  content: \"\\F17B\";\n}\n.fa-linux:before {\n  content: \"\\F17C\";\n}\n.fa-dribbble:before {\n  content: \"\\F17D\";\n}\n.fa-skype:before {\n  content: \"\\F17E\";\n}\n.fa-foursquare:before {\n  content: \"\\F180\";\n}\n.fa-trello:before {\n  content: \"\\F181\";\n}\n.fa-female:before {\n  content: \"\\F182\";\n}\n.fa-male:before {\n  content: \"\\F183\";\n}\n.fa-gittip:before,\n.fa-gratipay:before {\n  content: \"\\F184\";\n}\n.fa-sun-o:before {\n  content: \"\\F185\";\n}\n.fa-moon-o:before {\n  content: \"\\F186\";\n}\n.fa-archive:before {\n  content: \"\\F187\";\n}\n.fa-bug:before {\n  content: \"\\F188\";\n}\n.fa-vk:before {\n  content: \"\\F189\";\n}\n.fa-weibo:before {\n  content: \"\\F18A\";\n}\n.fa-renren:before {\n  content: \"\\F18B\";\n}\n.fa-pagelines:before {\n  content: \"\\F18C\";\n}\n.fa-stack-exchange:before {\n  content: \"\\F18D\";\n}\n.fa-arrow-circle-o-right:before {\n  content: \"\\F18E\";\n}\n.fa-arrow-circle-o-left:before {\n  content: \"\\F190\";\n}\n.fa-toggle-left:before,\n.fa-caret-square-o-left:before {\n  content: \"\\F191\";\n}\n.fa-dot-circle-o:before {\n  content: \"\\F192\";\n}\n.fa-wheelchair:before {\n  content: \"\\F193\";\n}\n.fa-vimeo-square:before {\n  content: \"\\F194\";\n}\n.fa-turkish-lira:before,\n.fa-try:before {\n  content: \"\\F195\";\n}\n.fa-plus-square-o:before {\n  content: \"\\F196\";\n}\n.fa-space-shuttle:before {\n  content: \"\\F197\";\n}\n.fa-slack:before {\n  content: \"\\F198\";\n}\n.fa-envelope-square:before {\n  content: \"\\F199\";\n}\n.fa-wordpress:before {\n  content: \"\\F19A\";\n}\n.fa-openid:before {\n  content: \"\\F19B\";\n}\n.fa-institution:before,\n.fa-bank:before,\n.fa-university:before {\n  content: \"\\F19C\";\n}\n.fa-mortar-board:before,\n.fa-graduation-cap:before {\n  content: \"\\F19D\";\n}\n.fa-yahoo:before {\n  content: \"\\F19E\";\n}\n.fa-google:before {\n  content: \"\\F1A0\";\n}\n.fa-reddit:before {\n  content: \"\\F1A1\";\n}\n.fa-reddit-square:before {\n  content: \"\\F1A2\";\n}\n.fa-stumbleupon-circle:before {\n  content: \"\\F1A3\";\n}\n.fa-stumbleupon:before {\n  content: \"\\F1A4\";\n}\n.fa-delicious:before {\n  content: \"\\F1A5\";\n}\n.fa-digg:before {\n  content: \"\\F1A6\";\n}\n.fa-pied-piper-pp:before {\n  content: \"\\F1A7\";\n}\n.fa-pied-piper-alt:before {\n  content: \"\\F1A8\";\n}\n.fa-drupal:before {\n  content: \"\\F1A9\";\n}\n.fa-joomla:before {\n  content: \"\\F1AA\";\n}\n.fa-language:before {\n  content: \"\\F1AB\";\n}\n.fa-fax:before {\n  content: \"\\F1AC\";\n}\n.fa-building:before {\n  content: \"\\F1AD\";\n}\n.fa-child:before {\n  content: \"\\F1AE\";\n}\n.fa-paw:before {\n  content: \"\\F1B0\";\n}\n.fa-spoon:before {\n  content: \"\\F1B1\";\n}\n.fa-cube:before {\n  content: \"\\F1B2\";\n}\n.fa-cubes:before {\n  content: \"\\F1B3\";\n}\n.fa-behance:before {\n  content: \"\\F1B4\";\n}\n.fa-behance-square:before {\n  content: \"\\F1B5\";\n}\n.fa-steam:before {\n  content: \"\\F1B6\";\n}\n.fa-steam-square:before {\n  content: \"\\F1B7\";\n}\n.fa-recycle:before {\n  content: \"\\F1B8\";\n}\n.fa-automobile:before,\n.fa-car:before {\n  content: \"\\F1B9\";\n}\n.fa-cab:before,\n.fa-taxi:before {\n  content: \"\\F1BA\";\n}\n.fa-tree:before {\n  content: \"\\F1BB\";\n}\n.fa-spotify:before {\n  content: \"\\F1BC\";\n}\n.fa-deviantart:before {\n  content: \"\\F1BD\";\n}\n.fa-soundcloud:before {\n  content: \"\\F1BE\";\n}\n.fa-database:before {\n  content: \"\\F1C0\";\n}\n.fa-file-pdf-o:before {\n  content: \"\\F1C1\";\n}\n.fa-file-word-o:before {\n  content: \"\\F1C2\";\n}\n.fa-file-excel-o:before {\n  content: \"\\F1C3\";\n}\n.fa-file-powerpoint-o:before {\n  content: \"\\F1C4\";\n}\n.fa-file-photo-o:before,\n.fa-file-picture-o:before,\n.fa-file-image-o:before {\n  content: \"\\F1C5\";\n}\n.fa-file-zip-o:before,\n.fa-file-archive-o:before {\n  content: \"\\F1C6\";\n}\n.fa-file-sound-o:before,\n.fa-file-audio-o:before {\n  content: \"\\F1C7\";\n}\n.fa-file-movie-o:before,\n.fa-file-video-o:before {\n  content: \"\\F1C8\";\n}\n.fa-file-code-o:before {\n  content: \"\\F1C9\";\n}\n.fa-vine:before {\n  content: \"\\F1CA\";\n}\n.fa-codepen:before {\n  content: \"\\F1CB\";\n}\n.fa-jsfiddle:before {\n  content: \"\\F1CC\";\n}\n.fa-life-bouy:before,\n.fa-life-buoy:before,\n.fa-life-saver:before,\n.fa-support:before,\n.fa-life-ring:before {\n  content: \"\\F1CD\";\n}\n.fa-circle-o-notch:before {\n  content: \"\\F1CE\";\n}\n.fa-ra:before,\n.fa-resistance:before,\n.fa-rebel:before {\n  content: \"\\F1D0\";\n}\n.fa-ge:before,\n.fa-empire:before {\n  content: \"\\F1D1\";\n}\n.fa-git-square:before {\n  content: \"\\F1D2\";\n}\n.fa-git:before {\n  content: \"\\F1D3\";\n}\n.fa-y-combinator-square:before,\n.fa-yc-square:before,\n.fa-hacker-news:before {\n  content: \"\\F1D4\";\n}\n.fa-tencent-weibo:before {\n  content: \"\\F1D5\";\n}\n.fa-qq:before {\n  content: \"\\F1D6\";\n}\n.fa-wechat:before,\n.fa-weixin:before {\n  content: \"\\F1D7\";\n}\n.fa-send:before,\n.fa-paper-plane:before {\n  content: \"\\F1D8\";\n}\n.fa-send-o:before,\n.fa-paper-plane-o:before {\n  content: \"\\F1D9\";\n}\n.fa-history:before {\n  content: \"\\F1DA\";\n}\n.fa-circle-thin:before {\n  content: \"\\F1DB\";\n}\n.fa-header:before {\n  content: \"\\F1DC\";\n}\n.fa-paragraph:before {\n  content: \"\\F1DD\";\n}\n.fa-sliders:before {\n  content: \"\\F1DE\";\n}\n.fa-share-alt:before {\n  content: \"\\F1E0\";\n}\n.fa-share-alt-square:before {\n  content: \"\\F1E1\";\n}\n.fa-bomb:before {\n  content: \"\\F1E2\";\n}\n.fa-soccer-ball-o:before,\n.fa-futbol-o:before {\n  content: \"\\F1E3\";\n}\n.fa-tty:before {\n  content: \"\\F1E4\";\n}\n.fa-binoculars:before {\n  content: \"\\F1E5\";\n}\n.fa-plug:before {\n  content: \"\\F1E6\";\n}\n.fa-slideshare:before {\n  content: \"\\F1E7\";\n}\n.fa-twitch:before {\n  content: \"\\F1E8\";\n}\n.fa-yelp:before {\n  content: \"\\F1E9\";\n}\n.fa-newspaper-o:before {\n  content: \"\\F1EA\";\n}\n.fa-wifi:before {\n  content: \"\\F1EB\";\n}\n.fa-calculator:before {\n  content: \"\\F1EC\";\n}\n.fa-paypal:before {\n  content: \"\\F1ED\";\n}\n.fa-google-wallet:before {\n  content: \"\\F1EE\";\n}\n.fa-cc-visa:before {\n  content: \"\\F1F0\";\n}\n.fa-cc-mastercard:before {\n  content: \"\\F1F1\";\n}\n.fa-cc-discover:before {\n  content: \"\\F1F2\";\n}\n.fa-cc-amex:before {\n  content: \"\\F1F3\";\n}\n.fa-cc-paypal:before {\n  content: \"\\F1F4\";\n}\n.fa-cc-stripe:before {\n  content: \"\\F1F5\";\n}\n.fa-bell-slash:before {\n  content: \"\\F1F6\";\n}\n.fa-bell-slash-o:before {\n  content: \"\\F1F7\";\n}\n.fa-trash:before {\n  content: \"\\F1F8\";\n}\n.fa-copyright:before {\n  content: \"\\F1F9\";\n}\n.fa-at:before {\n  content: \"\\F1FA\";\n}\n.fa-eyedropper:before {\n  content: \"\\F1FB\";\n}\n.fa-paint-brush:before {\n  content: \"\\F1FC\";\n}\n.fa-birthday-cake:before {\n  content: \"\\F1FD\";\n}\n.fa-area-chart:before {\n  content: \"\\F1FE\";\n}\n.fa-pie-chart:before {\n  content: \"\\F200\";\n}\n.fa-line-chart:before {\n  content: \"\\F201\";\n}\n.fa-lastfm:before {\n  content: \"\\F202\";\n}\n.fa-lastfm-square:before {\n  content: \"\\F203\";\n}\n.fa-toggle-off:before {\n  content: \"\\F204\";\n}\n.fa-toggle-on:before {\n  content: \"\\F205\";\n}\n.fa-bicycle:before {\n  content: \"\\F206\";\n}\n.fa-bus:before {\n  content: \"\\F207\";\n}\n.fa-ioxhost:before {\n  content: \"\\F208\";\n}\n.fa-angellist:before {\n  content: \"\\F209\";\n}\n.fa-cc:before {\n  content: \"\\F20A\";\n}\n.fa-shekel:before,\n.fa-sheqel:before,\n.fa-ils:before {\n  content: \"\\F20B\";\n}\n.fa-meanpath:before {\n  content: \"\\F20C\";\n}\n.fa-buysellads:before {\n  content: \"\\F20D\";\n}\n.fa-connectdevelop:before {\n  content: \"\\F20E\";\n}\n.fa-dashcube:before {\n  content: \"\\F210\";\n}\n.fa-forumbee:before {\n  content: \"\\F211\";\n}\n.fa-leanpub:before {\n  content: \"\\F212\";\n}\n.fa-sellsy:before {\n  content: \"\\F213\";\n}\n.fa-shirtsinbulk:before {\n  content: \"\\F214\";\n}\n.fa-simplybuilt:before {\n  content: \"\\F215\";\n}\n.fa-skyatlas:before {\n  content: \"\\F216\";\n}\n.fa-cart-plus:before {\n  content: \"\\F217\";\n}\n.fa-cart-arrow-down:before {\n  content: \"\\F218\";\n}\n.fa-diamond:before {\n  content: \"\\F219\";\n}\n.fa-ship:before {\n  content: \"\\F21A\";\n}\n.fa-user-secret:before {\n  content: \"\\F21B\";\n}\n.fa-motorcycle:before {\n  content: \"\\F21C\";\n}\n.fa-street-view:before {\n  content: \"\\F21D\";\n}\n.fa-heartbeat:before {\n  content: \"\\F21E\";\n}\n.fa-venus:before {\n  content: \"\\F221\";\n}\n.fa-mars:before {\n  content: \"\\F222\";\n}\n.fa-mercury:before {\n  content: \"\\F223\";\n}\n.fa-intersex:before,\n.fa-transgender:before {\n  content: \"\\F224\";\n}\n.fa-transgender-alt:before {\n  content: \"\\F225\";\n}\n.fa-venus-double:before {\n  content: \"\\F226\";\n}\n.fa-mars-double:before {\n  content: \"\\F227\";\n}\n.fa-venus-mars:before {\n  content: \"\\F228\";\n}\n.fa-mars-stroke:before {\n  content: \"\\F229\";\n}\n.fa-mars-stroke-v:before {\n  content: \"\\F22A\";\n}\n.fa-mars-stroke-h:before {\n  content: \"\\F22B\";\n}\n.fa-neuter:before {\n  content: \"\\F22C\";\n}\n.fa-genderless:before {\n  content: \"\\F22D\";\n}\n.fa-facebook-official:before {\n  content: \"\\F230\";\n}\n.fa-pinterest-p:before {\n  content: \"\\F231\";\n}\n.fa-whatsapp:before {\n  content: \"\\F232\";\n}\n.fa-server:before {\n  content: \"\\F233\";\n}\n.fa-user-plus:before {\n  content: \"\\F234\";\n}\n.fa-user-times:before {\n  content: \"\\F235\";\n}\n.fa-hotel:before,\n.fa-bed:before {\n  content: \"\\F236\";\n}\n.fa-viacoin:before {\n  content: \"\\F237\";\n}\n.fa-train:before {\n  content: \"\\F238\";\n}\n.fa-subway:before {\n  content: \"\\F239\";\n}\n.fa-medium:before {\n  content: \"\\F23A\";\n}\n.fa-yc:before,\n.fa-y-combinator:before {\n  content: \"\\F23B\";\n}\n.fa-optin-monster:before {\n  content: \"\\F23C\";\n}\n.fa-opencart:before {\n  content: \"\\F23D\";\n}\n.fa-expeditedssl:before {\n  content: \"\\F23E\";\n}\n.fa-battery-4:before,\n.fa-battery:before,\n.fa-battery-full:before {\n  content: \"\\F240\";\n}\n.fa-battery-3:before,\n.fa-battery-three-quarters:before {\n  content: \"\\F241\";\n}\n.fa-battery-2:before,\n.fa-battery-half:before {\n  content: \"\\F242\";\n}\n.fa-battery-1:before,\n.fa-battery-quarter:before {\n  content: \"\\F243\";\n}\n.fa-battery-0:before,\n.fa-battery-empty:before {\n  content: \"\\F244\";\n}\n.fa-mouse-pointer:before {\n  content: \"\\F245\";\n}\n.fa-i-cursor:before {\n  content: \"\\F246\";\n}\n.fa-object-group:before {\n  content: \"\\F247\";\n}\n.fa-object-ungroup:before {\n  content: \"\\F248\";\n}\n.fa-sticky-note:before {\n  content: \"\\F249\";\n}\n.fa-sticky-note-o:before {\n  content: \"\\F24A\";\n}\n.fa-cc-jcb:before {\n  content: \"\\F24B\";\n}\n.fa-cc-diners-club:before {\n  content: \"\\F24C\";\n}\n.fa-clone:before {\n  content: \"\\F24D\";\n}\n.fa-balance-scale:before {\n  content: \"\\F24E\";\n}\n.fa-hourglass-o:before {\n  content: \"\\F250\";\n}\n.fa-hourglass-1:before,\n.fa-hourglass-start:before {\n  content: \"\\F251\";\n}\n.fa-hourglass-2:before,\n.fa-hourglass-half:before {\n  content: \"\\F252\";\n}\n.fa-hourglass-3:before,\n.fa-hourglass-end:before {\n  content: \"\\F253\";\n}\n.fa-hourglass:before {\n  content: \"\\F254\";\n}\n.fa-hand-grab-o:before,\n.fa-hand-rock-o:before {\n  content: \"\\F255\";\n}\n.fa-hand-stop-o:before,\n.fa-hand-paper-o:before {\n  content: \"\\F256\";\n}\n.fa-hand-scissors-o:before {\n  content: \"\\F257\";\n}\n.fa-hand-lizard-o:before {\n  content: \"\\F258\";\n}\n.fa-hand-spock-o:before {\n  content: \"\\F259\";\n}\n.fa-hand-pointer-o:before {\n  content: \"\\F25A\";\n}\n.fa-hand-peace-o:before {\n  content: \"\\F25B\";\n}\n.fa-trademark:before {\n  content: \"\\F25C\";\n}\n.fa-registered:before {\n  content: \"\\F25D\";\n}\n.fa-creative-commons:before {\n  content: \"\\F25E\";\n}\n.fa-gg:before {\n  content: \"\\F260\";\n}\n.fa-gg-circle:before {\n  content: \"\\F261\";\n}\n.fa-tripadvisor:before {\n  content: \"\\F262\";\n}\n.fa-odnoklassniki:before {\n  content: \"\\F263\";\n}\n.fa-odnoklassniki-square:before {\n  content: \"\\F264\";\n}\n.fa-get-pocket:before {\n  content: \"\\F265\";\n}\n.fa-wikipedia-w:before {\n  content: \"\\F266\";\n}\n.fa-safari:before {\n  content: \"\\F267\";\n}\n.fa-chrome:before {\n  content: \"\\F268\";\n}\n.fa-firefox:before {\n  content: \"\\F269\";\n}\n.fa-opera:before {\n  content: \"\\F26A\";\n}\n.fa-internet-explorer:before {\n  content: \"\\F26B\";\n}\n.fa-tv:before,\n.fa-television:before {\n  content: \"\\F26C\";\n}\n.fa-contao:before {\n  content: \"\\F26D\";\n}\n.fa-500px:before {\n  content: \"\\F26E\";\n}\n.fa-amazon:before {\n  content: \"\\F270\";\n}\n.fa-calendar-plus-o:before {\n  content: \"\\F271\";\n}\n.fa-calendar-minus-o:before {\n  content: \"\\F272\";\n}\n.fa-calendar-times-o:before {\n  content: \"\\F273\";\n}\n.fa-calendar-check-o:before {\n  content: \"\\F274\";\n}\n.fa-industry:before {\n  content: \"\\F275\";\n}\n.fa-map-pin:before {\n  content: \"\\F276\";\n}\n.fa-map-signs:before {\n  content: \"\\F277\";\n}\n.fa-map-o:before {\n  content: \"\\F278\";\n}\n.fa-map:before {\n  content: \"\\F279\";\n}\n.fa-commenting:before {\n  content: \"\\F27A\";\n}\n.fa-commenting-o:before {\n  content: \"\\F27B\";\n}\n.fa-houzz:before {\n  content: \"\\F27C\";\n}\n.fa-vimeo:before {\n  content: \"\\F27D\";\n}\n.fa-black-tie:before {\n  content: \"\\F27E\";\n}\n.fa-fonticons:before {\n  content: \"\\F280\";\n}\n.fa-reddit-alien:before {\n  content: \"\\F281\";\n}\n.fa-edge:before {\n  content: \"\\F282\";\n}\n.fa-credit-card-alt:before {\n  content: \"\\F283\";\n}\n.fa-codiepie:before {\n  content: \"\\F284\";\n}\n.fa-modx:before {\n  content: \"\\F285\";\n}\n.fa-fort-awesome:before {\n  content: \"\\F286\";\n}\n.fa-usb:before {\n  content: \"\\F287\";\n}\n.fa-product-hunt:before {\n  content: \"\\F288\";\n}\n.fa-mixcloud:before {\n  content: \"\\F289\";\n}\n.fa-scribd:before {\n  content: \"\\F28A\";\n}\n.fa-pause-circle:before {\n  content: \"\\F28B\";\n}\n.fa-pause-circle-o:before {\n  content: \"\\F28C\";\n}\n.fa-stop-circle:before {\n  content: \"\\F28D\";\n}\n.fa-stop-circle-o:before {\n  content: \"\\F28E\";\n}\n.fa-shopping-bag:before {\n  content: \"\\F290\";\n}\n.fa-shopping-basket:before {\n  content: \"\\F291\";\n}\n.fa-hashtag:before {\n  content: \"\\F292\";\n}\n.fa-bluetooth:before {\n  content: \"\\F293\";\n}\n.fa-bluetooth-b:before {\n  content: \"\\F294\";\n}\n.fa-percent:before {\n  content: \"\\F295\";\n}\n.fa-gitlab:before {\n  content: \"\\F296\";\n}\n.fa-wpbeginner:before {\n  content: \"\\F297\";\n}\n.fa-wpforms:before {\n  content: \"\\F298\";\n}\n.fa-envira:before {\n  content: \"\\F299\";\n}\n.fa-universal-access:before {\n  content: \"\\F29A\";\n}\n.fa-wheelchair-alt:before {\n  content: \"\\F29B\";\n}\n.fa-question-circle-o:before {\n  content: \"\\F29C\";\n}\n.fa-blind:before {\n  content: \"\\F29D\";\n}\n.fa-audio-description:before {\n  content: \"\\F29E\";\n}\n.fa-volume-control-phone:before {\n  content: \"\\F2A0\";\n}\n.fa-braille:before {\n  content: \"\\F2A1\";\n}\n.fa-assistive-listening-systems:before {\n  content: \"\\F2A2\";\n}\n.fa-asl-interpreting:before,\n.fa-american-sign-language-interpreting:before {\n  content: \"\\F2A3\";\n}\n.fa-deafness:before,\n.fa-hard-of-hearing:before,\n.fa-deaf:before {\n  content: \"\\F2A4\";\n}\n.fa-glide:before {\n  content: \"\\F2A5\";\n}\n.fa-glide-g:before {\n  content: \"\\F2A6\";\n}\n.fa-signing:before,\n.fa-sign-language:before {\n  content: \"\\F2A7\";\n}\n.fa-low-vision:before {\n  content: \"\\F2A8\";\n}\n.fa-viadeo:before {\n  content: \"\\F2A9\";\n}\n.fa-viadeo-square:before {\n  content: \"\\F2AA\";\n}\n.fa-snapchat:before {\n  content: \"\\F2AB\";\n}\n.fa-snapchat-ghost:before {\n  content: \"\\F2AC\";\n}\n.fa-snapchat-square:before {\n  content: \"\\F2AD\";\n}\n.fa-pied-piper:before {\n  content: \"\\F2AE\";\n}\n.fa-first-order:before {\n  content: \"\\F2B0\";\n}\n.fa-yoast:before {\n  content: \"\\F2B1\";\n}\n.fa-themeisle:before {\n  content: \"\\F2B2\";\n}\n.fa-google-plus-circle:before,\n.fa-google-plus-official:before {\n  content: \"\\F2B3\";\n}\n.fa-fa:before,\n.fa-font-awesome:before {\n  content: \"\\F2B4\";\n}\n.fa-handshake-o:before {\n  content: \"\\F2B5\";\n}\n.fa-envelope-open:before {\n  content: \"\\F2B6\";\n}\n.fa-envelope-open-o:before {\n  content: \"\\F2B7\";\n}\n.fa-linode:before {\n  content: \"\\F2B8\";\n}\n.fa-address-book:before {\n  content: \"\\F2B9\";\n}\n.fa-address-book-o:before {\n  content: \"\\F2BA\";\n}\n.fa-vcard:before,\n.fa-address-card:before {\n  content: \"\\F2BB\";\n}\n.fa-vcard-o:before,\n.fa-address-card-o:before {\n  content: \"\\F2BC\";\n}\n.fa-user-circle:before {\n  content: \"\\F2BD\";\n}\n.fa-user-circle-o:before {\n  content: \"\\F2BE\";\n}\n.fa-user-o:before {\n  content: \"\\F2C0\";\n}\n.fa-id-badge:before {\n  content: \"\\F2C1\";\n}\n.fa-drivers-license:before,\n.fa-id-card:before {\n  content: \"\\F2C2\";\n}\n.fa-drivers-license-o:before,\n.fa-id-card-o:before {\n  content: \"\\F2C3\";\n}\n.fa-quora:before {\n  content: \"\\F2C4\";\n}\n.fa-free-code-camp:before {\n  content: \"\\F2C5\";\n}\n.fa-telegram:before {\n  content: \"\\F2C6\";\n}\n.fa-thermometer-4:before,\n.fa-thermometer:before,\n.fa-thermometer-full:before {\n  content: \"\\F2C7\";\n}\n.fa-thermometer-3:before,\n.fa-thermometer-three-quarters:before {\n  content: \"\\F2C8\";\n}\n.fa-thermometer-2:before,\n.fa-thermometer-half:before {\n  content: \"\\F2C9\";\n}\n.fa-thermometer-1:before,\n.fa-thermometer-quarter:before {\n  content: \"\\F2CA\";\n}\n.fa-thermometer-0:before,\n.fa-thermometer-empty:before {\n  content: \"\\F2CB\";\n}\n.fa-shower:before {\n  content: \"\\F2CC\";\n}\n.fa-bathtub:before,\n.fa-s15:before,\n.fa-bath:before {\n  content: \"\\F2CD\";\n}\n.fa-podcast:before {\n  content: \"\\F2CE\";\n}\n.fa-window-maximize:before {\n  content: \"\\F2D0\";\n}\n.fa-window-minimize:before {\n  content: \"\\F2D1\";\n}\n.fa-window-restore:before {\n  content: \"\\F2D2\";\n}\n.fa-times-rectangle:before,\n.fa-window-close:before {\n  content: \"\\F2D3\";\n}\n.fa-times-rectangle-o:before,\n.fa-window-close-o:before {\n  content: \"\\F2D4\";\n}\n.fa-bandcamp:before {\n  content: \"\\F2D5\";\n}\n.fa-grav:before {\n  content: \"\\F2D6\";\n}\n.fa-etsy:before {\n  content: \"\\F2D7\";\n}\n.fa-imdb:before {\n  content: \"\\F2D8\";\n}\n.fa-ravelry:before {\n  content: \"\\F2D9\";\n}\n.fa-eercast:before {\n  content: \"\\F2DA\";\n}\n.fa-microchip:before {\n  content: \"\\F2DB\";\n}\n.fa-snowflake-o:before {\n  content: \"\\F2DC\";\n}\n.fa-superpowers:before {\n  content: \"\\F2DD\";\n}\n.fa-wpexplorer:before {\n  content: \"\\F2DE\";\n}\n.fa-meetup:before {\n  content: \"\\F2E0\";\n}\n.sr-only {\n  position: absolute;\n  width: 1px;\n  height: 1px;\n  padding: 0;\n  margin: -1px;\n  overflow: hidden;\n  clip: rect(0, 0, 0, 0);\n  border: 0;\n}\n.sr-only-focusable:active,\n.sr-only-focusable:focus {\n  position: static;\n  width: auto;\n  height: auto;\n  margin: 0;\n  overflow: visible;\n  clip: auto;\n}\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 4 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(0)();
-// imports
-
-
-// module
-exports.push([module.i, ".card {\r\n  min-width: 42px;\r\n  min-height: 42px;\r\n  font-size: 15px;\r\n  overflow: hidden;\r\n  transition: all .5s;\r\n}\r\n.btn {\r\n  background-color: #d3d3d3;\r\n  border: 1px solid #d9d9d9;\r\n  border-radius: 2px;\r\n  outline: none;\r\n  font-size: 15px;\r\n  padding: 4px 8px;\r\n  text-align: center;\r\n  user-select: none;\r\n  transition: all .3s;\r\n}\r\n.btn:not(.disabled):hover {\r\n  background-color: #e7e7e7;\r\n  cursor: pointer;\r\n}\r\n.btn.disabled {\r\n  opacity: .5;\r\n}\r\n.txt {\r\n  border: none;\r\n  border-bottom: 2px solid rgba(0,0,0,.12);\r\n  outline: none;\r\n  font-size: 15px;\r\n  padding: 4px 0;\r\n  transition: all .3s;\r\n  background-color: transparent;\r\n}\r\n.txt:focus {\r\n  border-bottom: 2px solid blue;\r\n}\r\n.c12 {\r\n  min-width: 0;\r\n  min-height: 0;\r\n  width: 12px;\r\n  height: 12px;\r\n  border-radius: 50%;\r\n  padding: 0;\r\n}\r\n.c18 {\r\n  min-width: 0;\r\n  min-height: 0;\r\n  width: 18px;\r\n  height: 18px;\r\n  border-radius: 50%;\r\n  padding: 0;\r\n}\r\n.c24 {\r\n  min-width: 0;\r\n  min-height: 0;\r\n  width: 24px;\r\n  height: 24px;\r\n  border-radius: 50%;\r\n  padding: 0;\r\n}\r\n.c30 {\r\n  min-width: 0;\r\n  min-height: 0;\r\n  width: 30px;\r\n  height: 30px;\r\n  border-radius: 50%;\r\n  padding: 0;\r\n}\r\n.c36 {\r\n  min-width: 0;\r\n  min-height: 0;\r\n  width: 36px;\r\n  height: 36px;\r\n  border-radius: 50%;\r\n  padding: 0;\r\n}\r\n.c42 {\r\n  min-width: 0;\r\n  min-height: 0;\r\n  width: 42px;\r\n  height: 42px;\r\n  border-radius: 50%;\r\n  padding: 0;\r\n}\r\n.c48 {\r\n  min-width: 0;\r\n  min-height: 0;\r\n  width: 48px;\r\n  height: 48px;\r\n  border-radius: 50%;\r\n  padding: 0;\r\n}\r\n.c54 {\r\n  min-width: 0;\r\n  min-height: 0;\r\n  width: 54px;\r\n  height: 54px;\r\n  border-radius: 50%;\r\n  padding: 0;\r\n}\r\n.c60 {\r\n  min-width: 0;\r\n  min-height: 0;\r\n  width: 60px;\r\n  height: 60px;\r\n  border-radius: 50%;\r\n  padding: 0;\r\n}\r\n.c66 {\r\n  min-width: 0;\r\n  min-height: 0;\r\n  width: 66px;\r\n  height: 66px;\r\n  border-radius: 50%;\r\n  padding: 0;\r\n}\r\n.c72 {\r\n  min-width: 0;\r\n  min-height: 0;\r\n  width: 72px;\r\n  height: 72px;\r\n  border-radius: 50%;\r\n  padding: 0;\r\n}\r\n.c78 {\r\n  min-width: 0;\r\n  min-height: 0;\r\n  width: 78px;\r\n  height: 78px;\r\n  border-radius: 50%;\r\n  padding: 0;\r\n}\r\n.c84 {\r\n  min-width: 0;\r\n  min-height: 0;\r\n  width: 84px;\r\n  height: 84px;\r\n  border-radius: 50%;\r\n  padding: 0;\r\n}\r\n.c90 {\r\n  min-width: 0;\r\n  min-height: 0;\r\n  width: 90px;\r\n  height: 90px;\r\n  border-radius: 50%;\r\n  padding: 0;\r\n}\r\n.c96 {\r\n  min-width: 0;\r\n  min-height: 0;\r\n  width: 96px;\r\n  height: 96px;\r\n  border-radius: 50%;\r\n  padding: 0;\r\n}\r\n.c102 {\r\n  min-width: 0;\r\n  min-height: 0;\r\n  width: 102px;\r\n  height: 102px;\r\n  border-radius: 50%;\r\n  padding: 0;\r\n}\r\n.c108 {\r\n  min-width: 0;\r\n  min-height: 0;\r\n  width: 108px;\r\n  height: 108px;\r\n  border-radius: 50%;\r\n  padding: 0;\r\n}\r\n.c114 {\r\n  min-width: 0;\r\n  min-height: 0;\r\n  width: 114px;\r\n  height: 114px;\r\n  border-radius: 50%;\r\n  padding: 0;\r\n}\r\n.c120 {\r\n  min-width: 0;\r\n  min-height: 0;\r\n  width: 120px;\r\n  height: 120px;\r\n  border-radius: 50%;\r\n  padding: 0;\r\n}\r\n.c126 {\r\n  min-width: 0;\r\n  min-height: 0;\r\n  width: 126px;\r\n  height: 126px;\r\n  border-radius: 50%;\r\n  padding: 0;\r\n}\r\n.w5 {\r\n  width: 5%;\r\n}\r\n.h5 {\r\n  height: 5%;\r\n}\r\n.w10 {\r\n  width: 10%;\r\n}\r\n.h10 {\r\n  height: 10%;\r\n}\r\n.w15 {\r\n  width: 15%;\r\n}\r\n.h15 {\r\n  height: 15%;\r\n}\r\n.w20 {\r\n  width: 20%;\r\n}\r\n.h20 {\r\n  height: 20%;\r\n}\r\n.w25 {\r\n  width: 25%;\r\n}\r\n.h25 {\r\n  height: 25%;\r\n}\r\n.w30 {\r\n  width: 30%;\r\n}\r\n.h30 {\r\n  height: 30%;\r\n}\r\n.w35 {\r\n  width: 35%;\r\n}\r\n.h35 {\r\n  height: 35%;\r\n}\r\n.w40 {\r\n  width: 40%;\r\n}\r\n.h40 {\r\n  height: 40%;\r\n}\r\n.w45 {\r\n  width: 45%;\r\n}\r\n.h45 {\r\n  height: 45%;\r\n}\r\n.w50 {\r\n  width: 50%;\r\n}\r\n.h50 {\r\n  height: 50%;\r\n}\r\n.w55 {\r\n  width: 55%;\r\n}\r\n.h55 {\r\n  height: 55%;\r\n}\r\n.w60 {\r\n  width: 60%;\r\n}\r\n.h60 {\r\n  height: 60%;\r\n}\r\n.w65 {\r\n  width: 65%;\r\n}\r\n.h65 {\r\n  height: 65%;\r\n}\r\n.w70 {\r\n  width: 70%;\r\n}\r\n.h70 {\r\n  height: 70%;\r\n}\r\n.w75 {\r\n  width: 75%;\r\n}\r\n.h75 {\r\n  height: 75%;\r\n}\r\n.w80 {\r\n  width: 80%;\r\n}\r\n.h80 {\r\n  height: 80%;\r\n}\r\n.w85 {\r\n  width: 85%;\r\n}\r\n.h85 {\r\n  height: 85%;\r\n}\r\n.w90 {\r\n  width: 90%;\r\n}\r\n.h90 {\r\n  height: 90%;\r\n}\r\n.w95 {\r\n  width: 95%;\r\n}\r\n.h95 {\r\n  height: 95%;\r\n}\r\n.w100 {\r\n  width: 100%;\r\n}\r\n.h100 {\r\n  height: 100%;\r\n}\r\n.w1-3 {\r\n  width: 33.33%;\r\n}\r\n.w2-3 {\r\n  width: 66.67%;\r\n}\r\n.w1-6 {\r\n  width: 16.67%;\r\n}\r\n.w5-6 {\r\n  width: 83.33%;\r\n}\r\n.w1-8 {\r\n  width: 12.50%;\r\n}\r\n.w3-8 {\r\n  width: 37.50%;\r\n}\r\n.w5-8 {\r\n  width: 62.50%;\r\n}\r\n.w7-8 {\r\n  width: 87.50%;\r\n}\r\n.w1-12 {\r\n  width: 8.33%;\r\n}\r\n.w5-12 {\r\n  width: 41.67%;\r\n}\r\n.w7-12 {\r\n  width: 58.33%;\r\n}\r\n.w11-12 {\r\n  width: 91.67%;\r\n}\r\n.fw1 {\r\n  font-weight: 100;\r\n}\r\n.fw2 {\r\n  font-weight: 200;\r\n}\r\n.fw3 {\r\n  font-weight: 300;\r\n}\r\n.fw4 {\r\n  font-weight: 400;\r\n}\r\n.fw5 {\r\n  font-weight: 500;\r\n}\r\n.fw6 {\r\n  font-weight: 600;\r\n}\r\n.fw7 {\r\n  font-weight: 700;\r\n}\r\n.fw8 {\r\n  font-weight: 800;\r\n}\r\n.fw9 {\r\n  font-weight: 900;\r\n}\r\n.fs6 {\r\n  font-size: 6px;\r\n}\r\n.fs8 {\r\n  font-size: 8px;\r\n}\r\n.fs10 {\r\n  font-size: 10px;\r\n}\r\n.fs12 {\r\n  font-size: 12px;\r\n}\r\n.fs15 {\r\n  font-size: 15px;\r\n}\r\n.fs18 {\r\n  font-size: 18px;\r\n}\r\n.fs21 {\r\n  font-size: 21px;\r\n}\r\n.fs24 {\r\n  font-size: 24px;\r\n}\r\n.fs30 {\r\n  font-size: 30px;\r\n}\r\n.fs36 {\r\n  font-size: 36px;\r\n}\r\n.fs42 {\r\n  font-size: 42px;\r\n}\r\n.fs48 {\r\n  font-size: 48px;\r\n}\r\n.fs64 {\r\n  font-size: 64px;\r\n}\r\n.fs128 {\r\n  font-size: 128px;\r\n}\r\n.m1 {\r\n  margin: 1px;\r\n}\r\n.ml1 {\r\n  margin-left: 1px;\r\n}\r\n.mr1 {\r\n  margin-right: 1px;\r\n}\r\n.mt1 {\r\n  margin-top: 1px;\r\n}\r\n.mb1 {\r\n  margin-bottom: 1px;\r\n}\r\n.mh1 {\r\n  margin-left: 1px;\r\n  margin-right: 1px;\r\n}\r\n.mv1 {\r\n  margin-top: 1px;\r\n  margin-bottom: 1px;\r\n}\r\n.m2 {\r\n  margin: 2px;\r\n}\r\n.ml2 {\r\n  margin-left: 2px;\r\n}\r\n.mr2 {\r\n  margin-right: 2px;\r\n}\r\n.mt2 {\r\n  margin-top: 2px;\r\n}\r\n.mb2 {\r\n  margin-bottom: 2px;\r\n}\r\n.mh2 {\r\n  margin-left: 2px;\r\n  margin-right: 2px;\r\n}\r\n.mv2 {\r\n  margin-top: 2px;\r\n  margin-bottom: 2px;\r\n}\r\n.m4 {\r\n  margin: 4px;\r\n}\r\n.ml4 {\r\n  margin-left: 4px;\r\n}\r\n.mr4 {\r\n  margin-right: 4px;\r\n}\r\n.mt4 {\r\n  margin-top: 4px;\r\n}\r\n.mb4 {\r\n  margin-bottom: 4px;\r\n}\r\n.mh4 {\r\n  margin-left: 4px;\r\n  margin-right: 4px;\r\n}\r\n.mv4 {\r\n  margin-top: 4px;\r\n  margin-bottom: 4px;\r\n}\r\n.m8 {\r\n  margin: 8px;\r\n}\r\n.ml8 {\r\n  margin-left: 8px;\r\n}\r\n.mr8 {\r\n  margin-right: 8px;\r\n}\r\n.mt8 {\r\n  margin-top: 8px;\r\n}\r\n.mb8 {\r\n  margin-bottom: 8px;\r\n}\r\n.mh8 {\r\n  margin-left: 8px;\r\n  margin-right: 8px;\r\n}\r\n.mv8 {\r\n  margin-top: 8px;\r\n  margin-bottom: 8px;\r\n}\r\n.m16 {\r\n  margin: 16px;\r\n}\r\n.ml16 {\r\n  margin-left: 16px;\r\n}\r\n.mr16 {\r\n  margin-right: 16px;\r\n}\r\n.mt16 {\r\n  margin-top: 16px;\r\n}\r\n.mb16 {\r\n  margin-bottom: 16px;\r\n}\r\n.mh16 {\r\n  margin-left: 16px;\r\n  margin-right: 16px;\r\n}\r\n.mv16 {\r\n  margin-top: 16px;\r\n  margin-bottom: 16px;\r\n}\r\n.m32 {\r\n  margin: 32px;\r\n}\r\n.ml32 {\r\n  margin-left: 32px;\r\n}\r\n.mr32 {\r\n  margin-right: 32px;\r\n}\r\n.mt32 {\r\n  margin-top: 32px;\r\n}\r\n.mb32 {\r\n  margin-bottom: 32px;\r\n}\r\n.mh32 {\r\n  margin-left: 32px;\r\n  margin-right: 32px;\r\n}\r\n.mv32 {\r\n  margin-top: 32px;\r\n  margin-bottom: 32px;\r\n}\r\n.m64 {\r\n  margin: 64px;\r\n}\r\n.ml64 {\r\n  margin-left: 64px;\r\n}\r\n.mr64 {\r\n  margin-right: 64px;\r\n}\r\n.mt64 {\r\n  margin-top: 64px;\r\n}\r\n.mb64 {\r\n  margin-bottom: 64px;\r\n}\r\n.mh64 {\r\n  margin-left: 64px;\r\n  margin-right: 64px;\r\n}\r\n.mv64 {\r\n  margin-top: 64px;\r\n  margin-bottom: 64px;\r\n}\r\n.m128 {\r\n  margin: 128px;\r\n}\r\n.ml128 {\r\n  margin-left: 128px;\r\n}\r\n.mr128 {\r\n  margin-right: 128px;\r\n}\r\n.mt128 {\r\n  margin-top: 128px;\r\n}\r\n.mb128 {\r\n  margin-bottom: 128px;\r\n}\r\n.mh128 {\r\n  margin-left: 128px;\r\n  margin-right: 128px;\r\n}\r\n.mv128 {\r\n  margin-top: 128px;\r\n  margin-bottom: 128px;\r\n}\r\n.p0 {\r\n  padding: 0;\r\n}\r\n.ph0 {\r\n  padding-left: 0;\r\n  padding-right: 0;\r\n}\r\n.pv0 {\r\n  padding-top: 0;\r\n  padding-bottom: 0;\r\n}\r\n.p1 {\r\n  padding: 1px;\r\n}\r\n.pl1 {\r\n  padding-left: 1px;\r\n}\r\n.pr1 {\r\n  padding-right: 1px;\r\n}\r\n.pt1 {\r\n  padding-top: 1px;\r\n}\r\n.pb1 {\r\n  padding-bottom: 1px;\r\n}\r\n.ph1 {\r\n  padding-left: 1px;\r\n  padding-right: 1px;\r\n}\r\n.pv1 {\r\n  padding-top: 1px;\r\n  padding-bottom: 1px;\r\n}\r\n.p2 {\r\n  padding: 2px;\r\n}\r\n.pl2 {\r\n  padding-left: 2px;\r\n}\r\n.pr2 {\r\n  padding-right: 2px;\r\n}\r\n.pt2 {\r\n  padding-top: 2px;\r\n}\r\n.pb2 {\r\n  padding-bottom: 2px;\r\n}\r\n.ph2 {\r\n  padding-left: 2px;\r\n  padding-right: 2px;\r\n}\r\n.pv2 {\r\n  padding-top: 2px;\r\n  padding-bottom: 2px;\r\n}\r\n.p4 {\r\n  padding: 4px;\r\n}\r\n.pl4 {\r\n  padding-left: 4px;\r\n}\r\n.pr4 {\r\n  padding-right: 4px;\r\n}\r\n.pt4 {\r\n  padding-top: 4px;\r\n}\r\n.pb4 {\r\n  padding-bottom: 4px;\r\n}\r\n.ph4 {\r\n  padding-left: 4px;\r\n  padding-right: 4px;\r\n}\r\n.pv4 {\r\n  padding-top: 4px;\r\n  padding-bottom: 4px;\r\n}\r\n.p8 {\r\n  padding: 8px;\r\n}\r\n.pl8 {\r\n  padding-left: 8px;\r\n}\r\n.pr8 {\r\n  padding-right: 8px;\r\n}\r\n.pt8 {\r\n  padding-top: 8px;\r\n}\r\n.pb8 {\r\n  padding-bottom: 8px;\r\n}\r\n.ph8 {\r\n  padding-left: 8px;\r\n  padding-right: 8px;\r\n}\r\n.pv8 {\r\n  padding-top: 8px;\r\n  padding-bottom: 8px;\r\n}\r\n.p16 {\r\n  padding: 16px;\r\n}\r\n.pl16 {\r\n  padding-left: 16px;\r\n}\r\n.pr16 {\r\n  padding-right: 16px;\r\n}\r\n.pt16 {\r\n  padding-top: 16px;\r\n}\r\n.pb16 {\r\n  padding-bottom: 16px;\r\n}\r\n.ph16 {\r\n  padding-left: 16px;\r\n  padding-right: 16px;\r\n}\r\n.pv16 {\r\n  padding-top: 16px;\r\n  padding-bottom: 16px;\r\n}\r\n.p32 {\r\n  padding: 32px;\r\n}\r\n.pl32 {\r\n  padding-left: 32px;\r\n}\r\n.pr32 {\r\n  padding-right: 32px;\r\n}\r\n.pt32 {\r\n  padding-top: 32px;\r\n}\r\n.pb32 {\r\n  padding-bottom: 32px;\r\n}\r\n.ph32 {\r\n  padding-left: 32px;\r\n  padding-right: 32px;\r\n}\r\n.pv32 {\r\n  padding-top: 32px;\r\n  padding-bottom: 32px;\r\n}\r\n.p64 {\r\n  padding: 64px;\r\n}\r\n.pl64 {\r\n  padding-left: 64px;\r\n}\r\n.pr64 {\r\n  padding-right: 64px;\r\n}\r\n.pt64 {\r\n  padding-top: 64px;\r\n}\r\n.pb64 {\r\n  padding-bottom: 64px;\r\n}\r\n.ph64 {\r\n  padding-left: 64px;\r\n  padding-right: 64px;\r\n}\r\n.pv64 {\r\n  padding-top: 64px;\r\n  padding-bottom: 64px;\r\n}\r\n.p128 {\r\n  padding: 128px;\r\n}\r\n.pl128 {\r\n  padding-left: 128px;\r\n}\r\n.pr128 {\r\n  padding-right: 128px;\r\n}\r\n.pt128 {\r\n  padding-top: 128px;\r\n}\r\n.pb128 {\r\n  padding-bottom: 128px;\r\n}\r\n.ph128 {\r\n  padding-left: 128px;\r\n  padding-right: 128px;\r\n}\r\n.pv128 {\r\n  padding-top: 128px;\r\n  padding-bottom: 128px;\r\n}\r\n.br1 {\r\n  border-radius: 1px;\r\n}\r\n.br2 {\r\n  border-radius: 2px;\r\n}\r\n.br3 {\r\n  border-radius: 3px;\r\n}\r\n.br4 {\r\n  border-radius: 4px;\r\n}\r\n.br5 {\r\n  border-radius: 5px;\r\n}\r\n.br6 {\r\n  border-radius: 6px;\r\n}\r\n.br7 {\r\n  border-radius: 7px;\r\n}\r\n.br8 {\r\n  border-radius: 8px;\r\n}\r\n.br9 {\r\n  border-radius: 9px;\r\n}\r\n.br10 {\r\n  border-radius: 10px;\r\n}\r\n.br11 {\r\n  border-radius: 11px;\r\n}\r\n.br12 {\r\n  border-radius: 12px;\r\n}\r\n.br13 {\r\n  border-radius: 13px;\r\n}\r\n.br14 {\r\n  border-radius: 14px;\r\n}\r\n.br15 {\r\n  border-radius: 15px;\r\n}\r\n.br16 {\r\n  border-radius: 16px;\r\n}\r\n.br50 {\r\n  border-radius: 50%;\r\n}\r\n.bw0 {\r\n  border-width: 0px;\r\n}\r\n.bw1 {\r\n  border-width: 1px;\r\n}\r\n.bw2 {\r\n  border-width: 2px;\r\n}\r\n.bw3 {\r\n  border-width: 3px;\r\n}\r\n.bw4 {\r\n  border-width: 4px;\r\n}\r\n.bw5 {\r\n  border-width: 5px;\r\n}\r\n.bw6 {\r\n  border-width: 6px;\r\n}\r\n.bw7 {\r\n  border-width: 7px;\r\n}\r\n.bw8 {\r\n  border-width: 8px;\r\n}\r\n.bw9 {\r\n  border-width: 9px;\r\n}\r\n.bw10 {\r\n  border-width: 10px;\r\n}\r\n.bw11 {\r\n  border-width: 11px;\r\n}\r\n.bw12 {\r\n  border-width: 12px;\r\n}\r\n.bw13 {\r\n  border-width: 13px;\r\n}\r\n.bw14 {\r\n  border-width: 14px;\r\n}\r\n.bw15 {\r\n  border-width: 15px;\r\n}\r\n.bw16 {\r\n  border-width: 16px;\r\n}\r\n.aliceblue {\r\n  color: #f0f8ff;\r\n}\r\n.Aliceblue {\r\n  background-color: #f0f8ff;\r\n}\r\n.hAliceblue {\r\n  background-color: #f0f8ff;\r\n}\r\n.hAliceblue:not(.disabled):hover {\r\n  background-color: #ffffff;\r\n}\r\n.hAliceblue:not(.disabled):active {\r\n  background-color: #dce4eb;\r\n}\r\n.antiquewhite {\r\n  color: #faebd7;\r\n}\r\n.Antiquewhite {\r\n  background-color: #faebd7;\r\n}\r\n.hAntiquewhite {\r\n  background-color: #faebd7;\r\n}\r\n.hAntiquewhite:not(.disabled):hover {\r\n  background-color: #ffffeb;\r\n}\r\n.hAntiquewhite:not(.disabled):active {\r\n  background-color: #e6d7c3;\r\n}\r\n.aqua {\r\n  color: #00ffff;\r\n}\r\n.Aqua {\r\n  background-color: #00ffff;\r\n}\r\n.hAqua {\r\n  background-color: #00ffff;\r\n}\r\n.hAqua:not(.disabled):hover {\r\n  background-color: #14ffff;\r\n}\r\n.hAqua:not(.disabled):active {\r\n  background-color: #00ebeb;\r\n}\r\n.aquamarine {\r\n  color: #7fffd4;\r\n}\r\n.Aquamarine {\r\n  background-color: #7fffd4;\r\n}\r\n.hAquamarine {\r\n  background-color: #7fffd4;\r\n}\r\n.hAquamarine:not(.disabled):hover {\r\n  background-color: #93ffe8;\r\n}\r\n.hAquamarine:not(.disabled):active {\r\n  background-color: #6bebc0;\r\n}\r\n.azure {\r\n  color: #f0ffff;\r\n}\r\n.Azure {\r\n  background-color: #f0ffff;\r\n}\r\n.hAzure {\r\n  background-color: #f0ffff;\r\n}\r\n.hAzure:not(.disabled):hover {\r\n  background-color: #ffffff;\r\n}\r\n.hAzure:not(.disabled):active {\r\n  background-color: #dcebeb;\r\n}\r\n.beige {\r\n  color: #f5f5dc;\r\n}\r\n.Beige {\r\n  background-color: #f5f5dc;\r\n}\r\n.hBeige {\r\n  background-color: #f5f5dc;\r\n}\r\n.hBeige:not(.disabled):hover {\r\n  background-color: #fffff0;\r\n}\r\n.hBeige:not(.disabled):active {\r\n  background-color: #e1e1c8;\r\n}\r\n.bisque {\r\n  color: #ffe4c4;\r\n}\r\n.Bisque {\r\n  background-color: #ffe4c4;\r\n}\r\n.hBisque {\r\n  background-color: #ffe4c4;\r\n}\r\n.hBisque:not(.disabled):hover {\r\n  background-color: #fff8d8;\r\n}\r\n.hBisque:not(.disabled):active {\r\n  background-color: #ebd0b0;\r\n}\r\n.black {\r\n  color: #000000;\r\n}\r\n.Black {\r\n  background-color: #000000;\r\n}\r\n.hBlack {\r\n  background-color: #000000;\r\n}\r\n.hBlack:not(.disabled):hover {\r\n  background-color: #141414;\r\n}\r\n.hBlack:not(.disabled):active {\r\n  background-color: #000000;\r\n}\r\n.blanchedalmond {\r\n  color: #ffebcd;\r\n}\r\n.Blanchedalmond {\r\n  background-color: #ffebcd;\r\n}\r\n.hBlanchedalmond {\r\n  background-color: #ffebcd;\r\n}\r\n.hBlanchedalmond:not(.disabled):hover {\r\n  background-color: #ffffe1;\r\n}\r\n.hBlanchedalmond:not(.disabled):active {\r\n  background-color: #ebd7b9;\r\n}\r\n.blue {\r\n  color: #0000ff;\r\n}\r\n.Blue {\r\n  background-color: #0000ff;\r\n}\r\n.hBlue {\r\n  background-color: #0000ff;\r\n}\r\n.hBlue:not(.disabled):hover {\r\n  background-color: #1414ff;\r\n}\r\n.hBlue:not(.disabled):active {\r\n  background-color: #0000eb;\r\n}\r\n.blueviolet {\r\n  color: #8a2be2;\r\n}\r\n.Blueviolet {\r\n  background-color: #8a2be2;\r\n}\r\n.hBlueviolet {\r\n  background-color: #8a2be2;\r\n}\r\n.hBlueviolet:not(.disabled):hover {\r\n  background-color: #9e3ff6;\r\n}\r\n.hBlueviolet:not(.disabled):active {\r\n  background-color: #7617ce;\r\n}\r\n.brown {\r\n  color: #a52a2a;\r\n}\r\n.Brown {\r\n  background-color: #a52a2a;\r\n}\r\n.hBrown {\r\n  background-color: #a52a2a;\r\n}\r\n.hBrown:not(.disabled):hover {\r\n  background-color: #b93e3e;\r\n}\r\n.hBrown:not(.disabled):active {\r\n  background-color: #911616;\r\n}\r\n.burlywood {\r\n  color: #deb887;\r\n}\r\n.Burlywood {\r\n  background-color: #deb887;\r\n}\r\n.hBurlywood {\r\n  background-color: #deb887;\r\n}\r\n.hBurlywood:not(.disabled):hover {\r\n  background-color: #f2cc9b;\r\n}\r\n.hBurlywood:not(.disabled):active {\r\n  background-color: #caa473;\r\n}\r\n.cadetblue {\r\n  color: #5f9ea0;\r\n}\r\n.Cadetblue {\r\n  background-color: #5f9ea0;\r\n}\r\n.hCadetblue {\r\n  background-color: #5f9ea0;\r\n}\r\n.hCadetblue:not(.disabled):hover {\r\n  background-color: #73b2b4;\r\n}\r\n.hCadetblue:not(.disabled):active {\r\n  background-color: #4b8a8c;\r\n}\r\n.chartreuse {\r\n  color: #7fff00;\r\n}\r\n.Chartreuse {\r\n  background-color: #7fff00;\r\n}\r\n.hChartreuse {\r\n  background-color: #7fff00;\r\n}\r\n.hChartreuse:not(.disabled):hover {\r\n  background-color: #93ff14;\r\n}\r\n.hChartreuse:not(.disabled):active {\r\n  background-color: #6beb00;\r\n}\r\n.chocolate {\r\n  color: #d2691e;\r\n}\r\n.Chocolate {\r\n  background-color: #d2691e;\r\n}\r\n.hChocolate {\r\n  background-color: #d2691e;\r\n}\r\n.hChocolate:not(.disabled):hover {\r\n  background-color: #e67d32;\r\n}\r\n.hChocolate:not(.disabled):active {\r\n  background-color: #be550a;\r\n}\r\n.coral {\r\n  color: #ff7f50;\r\n}\r\n.Coral {\r\n  background-color: #ff7f50;\r\n}\r\n.hCoral {\r\n  background-color: #ff7f50;\r\n}\r\n.hCoral:not(.disabled):hover {\r\n  background-color: #ff9364;\r\n}\r\n.hCoral:not(.disabled):active {\r\n  background-color: #eb6b3c;\r\n}\r\n.cornflowerblue {\r\n  color: #6495ed;\r\n}\r\n.Cornflowerblue {\r\n  background-color: #6495ed;\r\n}\r\n.hCornflowerblue {\r\n  background-color: #6495ed;\r\n}\r\n.hCornflowerblue:not(.disabled):hover {\r\n  background-color: #78a9ff;\r\n}\r\n.hCornflowerblue:not(.disabled):active {\r\n  background-color: #5081d9;\r\n}\r\n.cornsilk {\r\n  color: #fff8dc;\r\n}\r\n.Cornsilk {\r\n  background-color: #fff8dc;\r\n}\r\n.hCornsilk {\r\n  background-color: #fff8dc;\r\n}\r\n.hCornsilk:not(.disabled):hover {\r\n  background-color: #fffff0;\r\n}\r\n.hCornsilk:not(.disabled):active {\r\n  background-color: #ebe4c8;\r\n}\r\n.crimson {\r\n  color: #dc143c;\r\n}\r\n.Crimson {\r\n  background-color: #dc143c;\r\n}\r\n.hCrimson {\r\n  background-color: #dc143c;\r\n}\r\n.hCrimson:not(.disabled):hover {\r\n  background-color: #f02850;\r\n}\r\n.hCrimson:not(.disabled):active {\r\n  background-color: #c80028;\r\n}\r\n.cyan {\r\n  color: #00ffff;\r\n}\r\n.Cyan {\r\n  background-color: #00ffff;\r\n}\r\n.hCyan {\r\n  background-color: #00ffff;\r\n}\r\n.hCyan:not(.disabled):hover {\r\n  background-color: #14ffff;\r\n}\r\n.hCyan:not(.disabled):active {\r\n  background-color: #00ebeb;\r\n}\r\n.darkblue {\r\n  color: #00008b;\r\n}\r\n.Darkblue {\r\n  background-color: #00008b;\r\n}\r\n.hDarkblue {\r\n  background-color: #00008b;\r\n}\r\n.hDarkblue:not(.disabled):hover {\r\n  background-color: #14149f;\r\n}\r\n.hDarkblue:not(.disabled):active {\r\n  background-color: #000077;\r\n}\r\n.darkcyan {\r\n  color: #008b8b;\r\n}\r\n.Darkcyan {\r\n  background-color: #008b8b;\r\n}\r\n.hDarkcyan {\r\n  background-color: #008b8b;\r\n}\r\n.hDarkcyan:not(.disabled):hover {\r\n  background-color: #149f9f;\r\n}\r\n.hDarkcyan:not(.disabled):active {\r\n  background-color: #007777;\r\n}\r\n.darkgoldenrod {\r\n  color: #b8860b;\r\n}\r\n.Darkgoldenrod {\r\n  background-color: #b8860b;\r\n}\r\n.hDarkgoldenrod {\r\n  background-color: #b8860b;\r\n}\r\n.hDarkgoldenrod:not(.disabled):hover {\r\n  background-color: #cc9a1f;\r\n}\r\n.hDarkgoldenrod:not(.disabled):active {\r\n  background-color: #a47200;\r\n}\r\n.darkgray {\r\n  color: #a9a9a9;\r\n}\r\n.Darkgray {\r\n  background-color: #a9a9a9;\r\n}\r\n.hDarkgray {\r\n  background-color: #a9a9a9;\r\n}\r\n.hDarkgray:not(.disabled):hover {\r\n  background-color: #bdbdbd;\r\n}\r\n.hDarkgray:not(.disabled):active {\r\n  background-color: #959595;\r\n}\r\n.darkgreen {\r\n  color: #006400;\r\n}\r\n.Darkgreen {\r\n  background-color: #006400;\r\n}\r\n.hDarkgreen {\r\n  background-color: #006400;\r\n}\r\n.hDarkgreen:not(.disabled):hover {\r\n  background-color: #147814;\r\n}\r\n.hDarkgreen:not(.disabled):active {\r\n  background-color: #005000;\r\n}\r\n.darkkhaki {\r\n  color: #bdb76b;\r\n}\r\n.Darkkhaki {\r\n  background-color: #bdb76b;\r\n}\r\n.hDarkkhaki {\r\n  background-color: #bdb76b;\r\n}\r\n.hDarkkhaki:not(.disabled):hover {\r\n  background-color: #d1cb7f;\r\n}\r\n.hDarkkhaki:not(.disabled):active {\r\n  background-color: #a9a357;\r\n}\r\n.darkmagenta {\r\n  color: #8b008b;\r\n}\r\n.Darkmagenta {\r\n  background-color: #8b008b;\r\n}\r\n.hDarkmagenta {\r\n  background-color: #8b008b;\r\n}\r\n.hDarkmagenta:not(.disabled):hover {\r\n  background-color: #9f149f;\r\n}\r\n.hDarkmagenta:not(.disabled):active {\r\n  background-color: #770077;\r\n}\r\n.darkolivegreen {\r\n  color: #556b2f;\r\n}\r\n.Darkolivegreen {\r\n  background-color: #556b2f;\r\n}\r\n.hDarkolivegreen {\r\n  background-color: #556b2f;\r\n}\r\n.hDarkolivegreen:not(.disabled):hover {\r\n  background-color: #697f43;\r\n}\r\n.hDarkolivegreen:not(.disabled):active {\r\n  background-color: #41571b;\r\n}\r\n.darkorange {\r\n  color: #ff8c00;\r\n}\r\n.Darkorange {\r\n  background-color: #ff8c00;\r\n}\r\n.hDarkorange {\r\n  background-color: #ff8c00;\r\n}\r\n.hDarkorange:not(.disabled):hover {\r\n  background-color: #ffa014;\r\n}\r\n.hDarkorange:not(.disabled):active {\r\n  background-color: #eb7800;\r\n}\r\n.darkorchid {\r\n  color: #9932cc;\r\n}\r\n.Darkorchid {\r\n  background-color: #9932cc;\r\n}\r\n.hDarkorchid {\r\n  background-color: #9932cc;\r\n}\r\n.hDarkorchid:not(.disabled):hover {\r\n  background-color: #ad46e0;\r\n}\r\n.hDarkorchid:not(.disabled):active {\r\n  background-color: #851eb8;\r\n}\r\n.darkred {\r\n  color: #8b0000;\r\n}\r\n.Darkred {\r\n  background-color: #8b0000;\r\n}\r\n.hDarkred {\r\n  background-color: #8b0000;\r\n}\r\n.hDarkred:not(.disabled):hover {\r\n  background-color: #9f1414;\r\n}\r\n.hDarkred:not(.disabled):active {\r\n  background-color: #770000;\r\n}\r\n.darksalmon {\r\n  color: #e9967a;\r\n}\r\n.Darksalmon {\r\n  background-color: #e9967a;\r\n}\r\n.hDarksalmon {\r\n  background-color: #e9967a;\r\n}\r\n.hDarksalmon:not(.disabled):hover {\r\n  background-color: #fdaa8e;\r\n}\r\n.hDarksalmon:not(.disabled):active {\r\n  background-color: #d58266;\r\n}\r\n.darkseagreen {\r\n  color: #8fbc8f;\r\n}\r\n.Darkseagreen {\r\n  background-color: #8fbc8f;\r\n}\r\n.hDarkseagreen {\r\n  background-color: #8fbc8f;\r\n}\r\n.hDarkseagreen:not(.disabled):hover {\r\n  background-color: #a3d0a3;\r\n}\r\n.hDarkseagreen:not(.disabled):active {\r\n  background-color: #7ba87b;\r\n}\r\n.darkslateblue {\r\n  color: #483d8b;\r\n}\r\n.Darkslateblue {\r\n  background-color: #483d8b;\r\n}\r\n.hDarkslateblue {\r\n  background-color: #483d8b;\r\n}\r\n.hDarkslateblue:not(.disabled):hover {\r\n  background-color: #5c519f;\r\n}\r\n.hDarkslateblue:not(.disabled):active {\r\n  background-color: #342977;\r\n}\r\n.darkslategray {\r\n  color: #2f4f4f;\r\n}\r\n.Darkslategray {\r\n  background-color: #2f4f4f;\r\n}\r\n.hDarkslategray {\r\n  background-color: #2f4f4f;\r\n}\r\n.hDarkslategray:not(.disabled):hover {\r\n  background-color: #436363;\r\n}\r\n.hDarkslategray:not(.disabled):active {\r\n  background-color: #1b3b3b;\r\n}\r\n.darkturquoise {\r\n  color: #00ced1;\r\n}\r\n.Darkturquoise {\r\n  background-color: #00ced1;\r\n}\r\n.hDarkturquoise {\r\n  background-color: #00ced1;\r\n}\r\n.hDarkturquoise:not(.disabled):hover {\r\n  background-color: #14e2e5;\r\n}\r\n.hDarkturquoise:not(.disabled):active {\r\n  background-color: #00babd;\r\n}\r\n.darkviolet {\r\n  color: #9400d3;\r\n}\r\n.Darkviolet {\r\n  background-color: #9400d3;\r\n}\r\n.hDarkviolet {\r\n  background-color: #9400d3;\r\n}\r\n.hDarkviolet:not(.disabled):hover {\r\n  background-color: #a814e7;\r\n}\r\n.hDarkviolet:not(.disabled):active {\r\n  background-color: #8000bf;\r\n}\r\n.deeppink {\r\n  color: #ff1493;\r\n}\r\n.Deeppink {\r\n  background-color: #ff1493;\r\n}\r\n.hDeeppink {\r\n  background-color: #ff1493;\r\n}\r\n.hDeeppink:not(.disabled):hover {\r\n  background-color: #ff28a7;\r\n}\r\n.hDeeppink:not(.disabled):active {\r\n  background-color: #eb007f;\r\n}\r\n.deepskyblue {\r\n  color: #00bfff;\r\n}\r\n.Deepskyblue {\r\n  background-color: #00bfff;\r\n}\r\n.hDeepskyblue {\r\n  background-color: #00bfff;\r\n}\r\n.hDeepskyblue:not(.disabled):hover {\r\n  background-color: #14d3ff;\r\n}\r\n.hDeepskyblue:not(.disabled):active {\r\n  background-color: #00abeb;\r\n}\r\n.dimgray {\r\n  color: #696969;\r\n}\r\n.Dimgray {\r\n  background-color: #696969;\r\n}\r\n.hDimgray {\r\n  background-color: #696969;\r\n}\r\n.hDimgray:not(.disabled):hover {\r\n  background-color: #7d7d7d;\r\n}\r\n.hDimgray:not(.disabled):active {\r\n  background-color: #555555;\r\n}\r\n.dodgerblue {\r\n  color: #1e90ff;\r\n}\r\n.Dodgerblue {\r\n  background-color: #1e90ff;\r\n}\r\n.hDodgerblue {\r\n  background-color: #1e90ff;\r\n}\r\n.hDodgerblue:not(.disabled):hover {\r\n  background-color: #32a4ff;\r\n}\r\n.hDodgerblue:not(.disabled):active {\r\n  background-color: #0a7ceb;\r\n}\r\n.firebrick {\r\n  color: #b22222;\r\n}\r\n.Firebrick {\r\n  background-color: #b22222;\r\n}\r\n.hFirebrick {\r\n  background-color: #b22222;\r\n}\r\n.hFirebrick:not(.disabled):hover {\r\n  background-color: #c63636;\r\n}\r\n.hFirebrick:not(.disabled):active {\r\n  background-color: #9e0e0e;\r\n}\r\n.floralwhite {\r\n  color: #fffaf0;\r\n}\r\n.Floralwhite {\r\n  background-color: #fffaf0;\r\n}\r\n.hFloralwhite {\r\n  background-color: #fffaf0;\r\n}\r\n.hFloralwhite:not(.disabled):hover {\r\n  background-color: #ffffff;\r\n}\r\n.hFloralwhite:not(.disabled):active {\r\n  background-color: #ebe6dc;\r\n}\r\n.forestgreen {\r\n  color: #228b22;\r\n}\r\n.Forestgreen {\r\n  background-color: #228b22;\r\n}\r\n.hForestgreen {\r\n  background-color: #228b22;\r\n}\r\n.hForestgreen:not(.disabled):hover {\r\n  background-color: #369f36;\r\n}\r\n.hForestgreen:not(.disabled):active {\r\n  background-color: #0e770e;\r\n}\r\n.fuchsia {\r\n  color: #ff00ff;\r\n}\r\n.Fuchsia {\r\n  background-color: #ff00ff;\r\n}\r\n.hFuchsia {\r\n  background-color: #ff00ff;\r\n}\r\n.hFuchsia:not(.disabled):hover {\r\n  background-color: #ff14ff;\r\n}\r\n.hFuchsia:not(.disabled):active {\r\n  background-color: #eb00eb;\r\n}\r\n.gainsboro {\r\n  color: #dcdcdc;\r\n}\r\n.Gainsboro {\r\n  background-color: #dcdcdc;\r\n}\r\n.hGainsboro {\r\n  background-color: #dcdcdc;\r\n}\r\n.hGainsboro:not(.disabled):hover {\r\n  background-color: #f0f0f0;\r\n}\r\n.hGainsboro:not(.disabled):active {\r\n  background-color: #c8c8c8;\r\n}\r\n.ghostwhite {\r\n  color: #f8f8ff;\r\n}\r\n.Ghostwhite {\r\n  background-color: #f8f8ff;\r\n}\r\n.hGhostwhite {\r\n  background-color: #f8f8ff;\r\n}\r\n.hGhostwhite:not(.disabled):hover {\r\n  background-color: #ffffff;\r\n}\r\n.hGhostwhite:not(.disabled):active {\r\n  background-color: #e4e4eb;\r\n}\r\n.gold {\r\n  color: #ffd700;\r\n}\r\n.Gold {\r\n  background-color: #ffd700;\r\n}\r\n.hGold {\r\n  background-color: #ffd700;\r\n}\r\n.hGold:not(.disabled):hover {\r\n  background-color: #ffeb14;\r\n}\r\n.hGold:not(.disabled):active {\r\n  background-color: #ebc300;\r\n}\r\n.goldenrod {\r\n  color: #daa520;\r\n}\r\n.Goldenrod {\r\n  background-color: #daa520;\r\n}\r\n.hGoldenrod {\r\n  background-color: #daa520;\r\n}\r\n.hGoldenrod:not(.disabled):hover {\r\n  background-color: #eeb934;\r\n}\r\n.hGoldenrod:not(.disabled):active {\r\n  background-color: #c6910c;\r\n}\r\n.gray {\r\n  color: #808080;\r\n}\r\n.Gray {\r\n  background-color: #808080;\r\n}\r\n.hGray {\r\n  background-color: #808080;\r\n}\r\n.hGray:not(.disabled):hover {\r\n  background-color: #949494;\r\n}\r\n.hGray:not(.disabled):active {\r\n  background-color: #6c6c6c;\r\n}\r\n.green {\r\n  color: #008000;\r\n}\r\n.Green {\r\n  background-color: #008000;\r\n}\r\n.hGreen {\r\n  background-color: #008000;\r\n}\r\n.hGreen:not(.disabled):hover {\r\n  background-color: #149414;\r\n}\r\n.hGreen:not(.disabled):active {\r\n  background-color: #006c00;\r\n}\r\n.greenyellow {\r\n  color: #adff2f;\r\n}\r\n.Greenyellow {\r\n  background-color: #adff2f;\r\n}\r\n.hGreenyellow {\r\n  background-color: #adff2f;\r\n}\r\n.hGreenyellow:not(.disabled):hover {\r\n  background-color: #c1ff43;\r\n}\r\n.hGreenyellow:not(.disabled):active {\r\n  background-color: #99eb1b;\r\n}\r\n.honeydew {\r\n  color: #f0fff0;\r\n}\r\n.Honeydew {\r\n  background-color: #f0fff0;\r\n}\r\n.hHoneydew {\r\n  background-color: #f0fff0;\r\n}\r\n.hHoneydew:not(.disabled):hover {\r\n  background-color: #ffffff;\r\n}\r\n.hHoneydew:not(.disabled):active {\r\n  background-color: #dcebdc;\r\n}\r\n.hotpink {\r\n  color: #ff69b4;\r\n}\r\n.Hotpink {\r\n  background-color: #ff69b4;\r\n}\r\n.hHotpink {\r\n  background-color: #ff69b4;\r\n}\r\n.hHotpink:not(.disabled):hover {\r\n  background-color: #ff7dc8;\r\n}\r\n.hHotpink:not(.disabled):active {\r\n  background-color: #eb55a0;\r\n}\r\n.indianred  {\r\n  color: #cd5c5c;\r\n}\r\n.Indianred  {\r\n  background-color: #cd5c5c;\r\n}\r\n.hIndianred  {\r\n  background-color: #cd5c5c;\r\n}\r\n.hIndianred :not(.disabled):hover {\r\n  background-color: #e17070;\r\n}\r\n.hIndianred :not(.disabled):active {\r\n  background-color: #b94848;\r\n}\r\n.indigo {\r\n  color: #4b0082;\r\n}\r\n.Indigo {\r\n  background-color: #4b0082;\r\n}\r\n.hIndigo {\r\n  background-color: #4b0082;\r\n}\r\n.hIndigo:not(.disabled):hover {\r\n  background-color: #5f1496;\r\n}\r\n.hIndigo:not(.disabled):active {\r\n  background-color: #37006e;\r\n}\r\n.ivory {\r\n  color: #fffff0;\r\n}\r\n.Ivory {\r\n  background-color: #fffff0;\r\n}\r\n.hIvory {\r\n  background-color: #fffff0;\r\n}\r\n.hIvory:not(.disabled):hover {\r\n  background-color: #ffffff;\r\n}\r\n.hIvory:not(.disabled):active {\r\n  background-color: #ebebdc;\r\n}\r\n.khaki {\r\n  color: #f0e68c;\r\n}\r\n.Khaki {\r\n  background-color: #f0e68c;\r\n}\r\n.hKhaki {\r\n  background-color: #f0e68c;\r\n}\r\n.hKhaki:not(.disabled):hover {\r\n  background-color: #fffaa0;\r\n}\r\n.hKhaki:not(.disabled):active {\r\n  background-color: #dcd278;\r\n}\r\n.lavender {\r\n  color: #e6e6fa;\r\n}\r\n.Lavender {\r\n  background-color: #e6e6fa;\r\n}\r\n.hLavender {\r\n  background-color: #e6e6fa;\r\n}\r\n.hLavender:not(.disabled):hover {\r\n  background-color: #fafaff;\r\n}\r\n.hLavender:not(.disabled):active {\r\n  background-color: #d2d2e6;\r\n}\r\n.lavenderblush {\r\n  color: #fff0f5;\r\n}\r\n.Lavenderblush {\r\n  background-color: #fff0f5;\r\n}\r\n.hLavenderblush {\r\n  background-color: #fff0f5;\r\n}\r\n.hLavenderblush:not(.disabled):hover {\r\n  background-color: #ffffff;\r\n}\r\n.hLavenderblush:not(.disabled):active {\r\n  background-color: #ebdce1;\r\n}\r\n.lawngreen {\r\n  color: #7cfc00;\r\n}\r\n.Lawngreen {\r\n  background-color: #7cfc00;\r\n}\r\n.hLawngreen {\r\n  background-color: #7cfc00;\r\n}\r\n.hLawngreen:not(.disabled):hover {\r\n  background-color: #90ff14;\r\n}\r\n.hLawngreen:not(.disabled):active {\r\n  background-color: #68e800;\r\n}\r\n.lemonchiffon {\r\n  color: #fffacd;\r\n}\r\n.Lemonchiffon {\r\n  background-color: #fffacd;\r\n}\r\n.hLemonchiffon {\r\n  background-color: #fffacd;\r\n}\r\n.hLemonchiffon:not(.disabled):hover {\r\n  background-color: #ffffe1;\r\n}\r\n.hLemonchiffon:not(.disabled):active {\r\n  background-color: #ebe6b9;\r\n}\r\n.lightblue {\r\n  color: #add8e6;\r\n}\r\n.Lightblue {\r\n  background-color: #add8e6;\r\n}\r\n.hLightblue {\r\n  background-color: #add8e6;\r\n}\r\n.hLightblue:not(.disabled):hover {\r\n  background-color: #c1ecfa;\r\n}\r\n.hLightblue:not(.disabled):active {\r\n  background-color: #99c4d2;\r\n}\r\n.lightcoral {\r\n  color: #f08080;\r\n}\r\n.Lightcoral {\r\n  background-color: #f08080;\r\n}\r\n.hLightcoral {\r\n  background-color: #f08080;\r\n}\r\n.hLightcoral:not(.disabled):hover {\r\n  background-color: #ff9494;\r\n}\r\n.hLightcoral:not(.disabled):active {\r\n  background-color: #dc6c6c;\r\n}\r\n.lightcyan {\r\n  color: #e0ffff;\r\n}\r\n.Lightcyan {\r\n  background-color: #e0ffff;\r\n}\r\n.hLightcyan {\r\n  background-color: #e0ffff;\r\n}\r\n.hLightcyan:not(.disabled):hover {\r\n  background-color: #f4ffff;\r\n}\r\n.hLightcyan:not(.disabled):active {\r\n  background-color: #ccebeb;\r\n}\r\n.lightgoldenrodyellow {\r\n  color: #fafad2;\r\n}\r\n.Lightgoldenrodyellow {\r\n  background-color: #fafad2;\r\n}\r\n.hLightgoldenrodyellow {\r\n  background-color: #fafad2;\r\n}\r\n.hLightgoldenrodyellow:not(.disabled):hover {\r\n  background-color: #ffffe6;\r\n}\r\n.hLightgoldenrodyellow:not(.disabled):active {\r\n  background-color: #e6e6be;\r\n}\r\n.lightgray {\r\n  color: #d3d3d3;\r\n}\r\n.Lightgray {\r\n  background-color: #d3d3d3;\r\n}\r\n.hLightgray {\r\n  background-color: #d3d3d3;\r\n}\r\n.hLightgray:not(.disabled):hover {\r\n  background-color: #e7e7e7;\r\n}\r\n.hLightgray:not(.disabled):active {\r\n  background-color: #bfbfbf;\r\n}\r\n.lightgrey {\r\n  color: #d3d3d3;\r\n}\r\n.Lightgrey {\r\n  background-color: #d3d3d3;\r\n}\r\n.hLightgrey {\r\n  background-color: #d3d3d3;\r\n}\r\n.hLightgrey:not(.disabled):hover {\r\n  background-color: #e7e7e7;\r\n}\r\n.hLightgrey:not(.disabled):active {\r\n  background-color: #bfbfbf;\r\n}\r\n.lightgreen {\r\n  color: #90ee90;\r\n}\r\n.Lightgreen {\r\n  background-color: #90ee90;\r\n}\r\n.hLightgreen {\r\n  background-color: #90ee90;\r\n}\r\n.hLightgreen:not(.disabled):hover {\r\n  background-color: #a4ffa4;\r\n}\r\n.hLightgreen:not(.disabled):active {\r\n  background-color: #7cda7c;\r\n}\r\n.lightpink {\r\n  color: #ffb6c1;\r\n}\r\n.Lightpink {\r\n  background-color: #ffb6c1;\r\n}\r\n.hLightpink {\r\n  background-color: #ffb6c1;\r\n}\r\n.hLightpink:not(.disabled):hover {\r\n  background-color: #ffcad5;\r\n}\r\n.hLightpink:not(.disabled):active {\r\n  background-color: #eba2ad;\r\n}\r\n.lightsalmon {\r\n  color: #ffa07a;\r\n}\r\n.Lightsalmon {\r\n  background-color: #ffa07a;\r\n}\r\n.hLightsalmon {\r\n  background-color: #ffa07a;\r\n}\r\n.hLightsalmon:not(.disabled):hover {\r\n  background-color: #ffb48e;\r\n}\r\n.hLightsalmon:not(.disabled):active {\r\n  background-color: #eb8c66;\r\n}\r\n.lightseagreen {\r\n  color: #20b2aa;\r\n}\r\n.Lightseagreen {\r\n  background-color: #20b2aa;\r\n}\r\n.hLightseagreen {\r\n  background-color: #20b2aa;\r\n}\r\n.hLightseagreen:not(.disabled):hover {\r\n  background-color: #34c6be;\r\n}\r\n.hLightseagreen:not(.disabled):active {\r\n  background-color: #0c9e96;\r\n}\r\n.lightskyblue {\r\n  color: #87cefa;\r\n}\r\n.Lightskyblue {\r\n  background-color: #87cefa;\r\n}\r\n.hLightskyblue {\r\n  background-color: #87cefa;\r\n}\r\n.hLightskyblue:not(.disabled):hover {\r\n  background-color: #9be2ff;\r\n}\r\n.hLightskyblue:not(.disabled):active {\r\n  background-color: #73bae6;\r\n}\r\n.lightslategray {\r\n  color: #778899;\r\n}\r\n.Lightslategray {\r\n  background-color: #778899;\r\n}\r\n.hLightslategray {\r\n  background-color: #778899;\r\n}\r\n.hLightslategray:not(.disabled):hover {\r\n  background-color: #8b9cad;\r\n}\r\n.hLightslategray:not(.disabled):active {\r\n  background-color: #637485;\r\n}\r\n.lightsteelblue {\r\n  color: #b0c4de;\r\n}\r\n.Lightsteelblue {\r\n  background-color: #b0c4de;\r\n}\r\n.hLightsteelblue {\r\n  background-color: #b0c4de;\r\n}\r\n.hLightsteelblue:not(.disabled):hover {\r\n  background-color: #c4d8f2;\r\n}\r\n.hLightsteelblue:not(.disabled):active {\r\n  background-color: #9cb0ca;\r\n}\r\n.lightyellow {\r\n  color: #ffffe0;\r\n}\r\n.Lightyellow {\r\n  background-color: #ffffe0;\r\n}\r\n.hLightyellow {\r\n  background-color: #ffffe0;\r\n}\r\n.hLightyellow:not(.disabled):hover {\r\n  background-color: #fffff4;\r\n}\r\n.hLightyellow:not(.disabled):active {\r\n  background-color: #ebebcc;\r\n}\r\n.lime {\r\n  color: #00ff00;\r\n}\r\n.Lime {\r\n  background-color: #00ff00;\r\n}\r\n.hLime {\r\n  background-color: #00ff00;\r\n}\r\n.hLime:not(.disabled):hover {\r\n  background-color: #14ff14;\r\n}\r\n.hLime:not(.disabled):active {\r\n  background-color: #00eb00;\r\n}\r\n.limegreen {\r\n  color: #32cd32;\r\n}\r\n.Limegreen {\r\n  background-color: #32cd32;\r\n}\r\n.hLimegreen {\r\n  background-color: #32cd32;\r\n}\r\n.hLimegreen:not(.disabled):hover {\r\n  background-color: #46e146;\r\n}\r\n.hLimegreen:not(.disabled):active {\r\n  background-color: #1eb91e;\r\n}\r\n.linen {\r\n  color: #faf0e6;\r\n}\r\n.Linen {\r\n  background-color: #faf0e6;\r\n}\r\n.hLinen {\r\n  background-color: #faf0e6;\r\n}\r\n.hLinen:not(.disabled):hover {\r\n  background-color: #fffffa;\r\n}\r\n.hLinen:not(.disabled):active {\r\n  background-color: #e6dcd2;\r\n}\r\n.magenta {\r\n  color: #ff00ff;\r\n}\r\n.Magenta {\r\n  background-color: #ff00ff;\r\n}\r\n.hMagenta {\r\n  background-color: #ff00ff;\r\n}\r\n.hMagenta:not(.disabled):hover {\r\n  background-color: #ff14ff;\r\n}\r\n.hMagenta:not(.disabled):active {\r\n  background-color: #eb00eb;\r\n}\r\n.maroon {\r\n  color: #800000;\r\n}\r\n.Maroon {\r\n  background-color: #800000;\r\n}\r\n.hMaroon {\r\n  background-color: #800000;\r\n}\r\n.hMaroon:not(.disabled):hover {\r\n  background-color: #941414;\r\n}\r\n.hMaroon:not(.disabled):active {\r\n  background-color: #6c0000;\r\n}\r\n.mediumaquamarine {\r\n  color: #66cdaa;\r\n}\r\n.Mediumaquamarine {\r\n  background-color: #66cdaa;\r\n}\r\n.hMediumaquamarine {\r\n  background-color: #66cdaa;\r\n}\r\n.hMediumaquamarine:not(.disabled):hover {\r\n  background-color: #7ae1be;\r\n}\r\n.hMediumaquamarine:not(.disabled):active {\r\n  background-color: #52b996;\r\n}\r\n.mediumblue {\r\n  color: #0000cd;\r\n}\r\n.Mediumblue {\r\n  background-color: #0000cd;\r\n}\r\n.hMediumblue {\r\n  background-color: #0000cd;\r\n}\r\n.hMediumblue:not(.disabled):hover {\r\n  background-color: #1414e1;\r\n}\r\n.hMediumblue:not(.disabled):active {\r\n  background-color: #0000b9;\r\n}\r\n.mediumorchid {\r\n  color: #ba55d3;\r\n}\r\n.Mediumorchid {\r\n  background-color: #ba55d3;\r\n}\r\n.hMediumorchid {\r\n  background-color: #ba55d3;\r\n}\r\n.hMediumorchid:not(.disabled):hover {\r\n  background-color: #ce69e7;\r\n}\r\n.hMediumorchid:not(.disabled):active {\r\n  background-color: #a641bf;\r\n}\r\n.mediumpurple {\r\n  color: #9370d8;\r\n}\r\n.Mediumpurple {\r\n  background-color: #9370d8;\r\n}\r\n.hMediumpurple {\r\n  background-color: #9370d8;\r\n}\r\n.hMediumpurple:not(.disabled):hover {\r\n  background-color: #a784ec;\r\n}\r\n.hMediumpurple:not(.disabled):active {\r\n  background-color: #7f5cc4;\r\n}\r\n.mediumseagreen {\r\n  color: #3cb371;\r\n}\r\n.Mediumseagreen {\r\n  background-color: #3cb371;\r\n}\r\n.hMediumseagreen {\r\n  background-color: #3cb371;\r\n}\r\n.hMediumseagreen:not(.disabled):hover {\r\n  background-color: #50c785;\r\n}\r\n.hMediumseagreen:not(.disabled):active {\r\n  background-color: #289f5d;\r\n}\r\n.mediumslateblue {\r\n  color: #7b68ee;\r\n}\r\n.Mediumslateblue {\r\n  background-color: #7b68ee;\r\n}\r\n.hMediumslateblue {\r\n  background-color: #7b68ee;\r\n}\r\n.hMediumslateblue:not(.disabled):hover {\r\n  background-color: #8f7cff;\r\n}\r\n.hMediumslateblue:not(.disabled):active {\r\n  background-color: #6754da;\r\n}\r\n.mediumspringgreen {\r\n  color: #00fa9a;\r\n}\r\n.Mediumspringgreen {\r\n  background-color: #00fa9a;\r\n}\r\n.hMediumspringgreen {\r\n  background-color: #00fa9a;\r\n}\r\n.hMediumspringgreen:not(.disabled):hover {\r\n  background-color: #14ffae;\r\n}\r\n.hMediumspringgreen:not(.disabled):active {\r\n  background-color: #00e686;\r\n}\r\n.mediumturquoise {\r\n  color: #48d1cc;\r\n}\r\n.Mediumturquoise {\r\n  background-color: #48d1cc;\r\n}\r\n.hMediumturquoise {\r\n  background-color: #48d1cc;\r\n}\r\n.hMediumturquoise:not(.disabled):hover {\r\n  background-color: #5ce5e0;\r\n}\r\n.hMediumturquoise:not(.disabled):active {\r\n  background-color: #34bdb8;\r\n}\r\n.mediumvioletred {\r\n  color: #c71585;\r\n}\r\n.Mediumvioletred {\r\n  background-color: #c71585;\r\n}\r\n.hMediumvioletred {\r\n  background-color: #c71585;\r\n}\r\n.hMediumvioletred:not(.disabled):hover {\r\n  background-color: #db2999;\r\n}\r\n.hMediumvioletred:not(.disabled):active {\r\n  background-color: #b30171;\r\n}\r\n.midnightblue {\r\n  color: #191970;\r\n}\r\n.Midnightblue {\r\n  background-color: #191970;\r\n}\r\n.hMidnightblue {\r\n  background-color: #191970;\r\n}\r\n.hMidnightblue:not(.disabled):hover {\r\n  background-color: #2d2d84;\r\n}\r\n.hMidnightblue:not(.disabled):active {\r\n  background-color: #05055c;\r\n}\r\n.mintcream {\r\n  color: #f5fffa;\r\n}\r\n.Mintcream {\r\n  background-color: #f5fffa;\r\n}\r\n.hMintcream {\r\n  background-color: #f5fffa;\r\n}\r\n.hMintcream:not(.disabled):hover {\r\n  background-color: #ffffff;\r\n}\r\n.hMintcream:not(.disabled):active {\r\n  background-color: #e1ebe6;\r\n}\r\n.mistyrose {\r\n  color: #ffe4e1;\r\n}\r\n.Mistyrose {\r\n  background-color: #ffe4e1;\r\n}\r\n.hMistyrose {\r\n  background-color: #ffe4e1;\r\n}\r\n.hMistyrose:not(.disabled):hover {\r\n  background-color: #fff8f5;\r\n}\r\n.hMistyrose:not(.disabled):active {\r\n  background-color: #ebd0cd;\r\n}\r\n.moccasin {\r\n  color: #ffe4b5;\r\n}\r\n.Moccasin {\r\n  background-color: #ffe4b5;\r\n}\r\n.hMoccasin {\r\n  background-color: #ffe4b5;\r\n}\r\n.hMoccasin:not(.disabled):hover {\r\n  background-color: #fff8c9;\r\n}\r\n.hMoccasin:not(.disabled):active {\r\n  background-color: #ebd0a1;\r\n}\r\n.navajowhite {\r\n  color: #ffdead;\r\n}\r\n.Navajowhite {\r\n  background-color: #ffdead;\r\n}\r\n.hNavajowhite {\r\n  background-color: #ffdead;\r\n}\r\n.hNavajowhite:not(.disabled):hover {\r\n  background-color: #fff2c1;\r\n}\r\n.hNavajowhite:not(.disabled):active {\r\n  background-color: #ebca99;\r\n}\r\n.navy {\r\n  color: #000080;\r\n}\r\n.Navy {\r\n  background-color: #000080;\r\n}\r\n.hNavy {\r\n  background-color: #000080;\r\n}\r\n.hNavy:not(.disabled):hover {\r\n  background-color: #141494;\r\n}\r\n.hNavy:not(.disabled):active {\r\n  background-color: #00006c;\r\n}\r\n.oldlace {\r\n  color: #fdf5e6;\r\n}\r\n.Oldlace {\r\n  background-color: #fdf5e6;\r\n}\r\n.hOldlace {\r\n  background-color: #fdf5e6;\r\n}\r\n.hOldlace:not(.disabled):hover {\r\n  background-color: #fffffa;\r\n}\r\n.hOldlace:not(.disabled):active {\r\n  background-color: #e9e1d2;\r\n}\r\n.olive {\r\n  color: #808000;\r\n}\r\n.Olive {\r\n  background-color: #808000;\r\n}\r\n.hOlive {\r\n  background-color: #808000;\r\n}\r\n.hOlive:not(.disabled):hover {\r\n  background-color: #949414;\r\n}\r\n.hOlive:not(.disabled):active {\r\n  background-color: #6c6c00;\r\n}\r\n.olivedrab {\r\n  color: #6b8e23;\r\n}\r\n.Olivedrab {\r\n  background-color: #6b8e23;\r\n}\r\n.hOlivedrab {\r\n  background-color: #6b8e23;\r\n}\r\n.hOlivedrab:not(.disabled):hover {\r\n  background-color: #7fa237;\r\n}\r\n.hOlivedrab:not(.disabled):active {\r\n  background-color: #577a0f;\r\n}\r\n.orange {\r\n  color: #ffa500;\r\n}\r\n.Orange {\r\n  background-color: #ffa500;\r\n}\r\n.hOrange {\r\n  background-color: #ffa500;\r\n}\r\n.hOrange:not(.disabled):hover {\r\n  background-color: #ffb914;\r\n}\r\n.hOrange:not(.disabled):active {\r\n  background-color: #eb9100;\r\n}\r\n.orangered {\r\n  color: #ff4500;\r\n}\r\n.Orangered {\r\n  background-color: #ff4500;\r\n}\r\n.hOrangered {\r\n  background-color: #ff4500;\r\n}\r\n.hOrangered:not(.disabled):hover {\r\n  background-color: #ff5914;\r\n}\r\n.hOrangered:not(.disabled):active {\r\n  background-color: #eb3100;\r\n}\r\n.orchid {\r\n  color: #da70d6;\r\n}\r\n.Orchid {\r\n  background-color: #da70d6;\r\n}\r\n.hOrchid {\r\n  background-color: #da70d6;\r\n}\r\n.hOrchid:not(.disabled):hover {\r\n  background-color: #ee84ea;\r\n}\r\n.hOrchid:not(.disabled):active {\r\n  background-color: #c65cc2;\r\n}\r\n.palegoldenrod {\r\n  color: #eee8aa;\r\n}\r\n.Palegoldenrod {\r\n  background-color: #eee8aa;\r\n}\r\n.hPalegoldenrod {\r\n  background-color: #eee8aa;\r\n}\r\n.hPalegoldenrod:not(.disabled):hover {\r\n  background-color: #fffcbe;\r\n}\r\n.hPalegoldenrod:not(.disabled):active {\r\n  background-color: #dad496;\r\n}\r\n.palegreen {\r\n  color: #98fb98;\r\n}\r\n.Palegreen {\r\n  background-color: #98fb98;\r\n}\r\n.hPalegreen {\r\n  background-color: #98fb98;\r\n}\r\n.hPalegreen:not(.disabled):hover {\r\n  background-color: #acffac;\r\n}\r\n.hPalegreen:not(.disabled):active {\r\n  background-color: #84e784;\r\n}\r\n.paleturquoise {\r\n  color: #afeeee;\r\n}\r\n.Paleturquoise {\r\n  background-color: #afeeee;\r\n}\r\n.hPaleturquoise {\r\n  background-color: #afeeee;\r\n}\r\n.hPaleturquoise:not(.disabled):hover {\r\n  background-color: #c3ffff;\r\n}\r\n.hPaleturquoise:not(.disabled):active {\r\n  background-color: #9bdada;\r\n}\r\n.palevioletred {\r\n  color: #d87093;\r\n}\r\n.Palevioletred {\r\n  background-color: #d87093;\r\n}\r\n.hPalevioletred {\r\n  background-color: #d87093;\r\n}\r\n.hPalevioletred:not(.disabled):hover {\r\n  background-color: #ec84a7;\r\n}\r\n.hPalevioletred:not(.disabled):active {\r\n  background-color: #c45c7f;\r\n}\r\n.papayawhip {\r\n  color: #ffefd5;\r\n}\r\n.Papayawhip {\r\n  background-color: #ffefd5;\r\n}\r\n.hPapayawhip {\r\n  background-color: #ffefd5;\r\n}\r\n.hPapayawhip:not(.disabled):hover {\r\n  background-color: #ffffe9;\r\n}\r\n.hPapayawhip:not(.disabled):active {\r\n  background-color: #ebdbc1;\r\n}\r\n.peachpuff {\r\n  color: #ffdab9;\r\n}\r\n.Peachpuff {\r\n  background-color: #ffdab9;\r\n}\r\n.hPeachpuff {\r\n  background-color: #ffdab9;\r\n}\r\n.hPeachpuff:not(.disabled):hover {\r\n  background-color: #ffeecd;\r\n}\r\n.hPeachpuff:not(.disabled):active {\r\n  background-color: #ebc6a5;\r\n}\r\n.peru {\r\n  color: #cd853f;\r\n}\r\n.Peru {\r\n  background-color: #cd853f;\r\n}\r\n.hPeru {\r\n  background-color: #cd853f;\r\n}\r\n.hPeru:not(.disabled):hover {\r\n  background-color: #e19953;\r\n}\r\n.hPeru:not(.disabled):active {\r\n  background-color: #b9712b;\r\n}\r\n.pink {\r\n  color: #ffc0cb;\r\n}\r\n.Pink {\r\n  background-color: #ffc0cb;\r\n}\r\n.hPink {\r\n  background-color: #ffc0cb;\r\n}\r\n.hPink:not(.disabled):hover {\r\n  background-color: #ffd4df;\r\n}\r\n.hPink:not(.disabled):active {\r\n  background-color: #ebacb7;\r\n}\r\n.plum {\r\n  color: #dda0dd;\r\n}\r\n.Plum {\r\n  background-color: #dda0dd;\r\n}\r\n.hPlum {\r\n  background-color: #dda0dd;\r\n}\r\n.hPlum:not(.disabled):hover {\r\n  background-color: #f1b4f1;\r\n}\r\n.hPlum:not(.disabled):active {\r\n  background-color: #c98cc9;\r\n}\r\n.powderblue {\r\n  color: #b0e0e6;\r\n}\r\n.Powderblue {\r\n  background-color: #b0e0e6;\r\n}\r\n.hPowderblue {\r\n  background-color: #b0e0e6;\r\n}\r\n.hPowderblue:not(.disabled):hover {\r\n  background-color: #c4f4fa;\r\n}\r\n.hPowderblue:not(.disabled):active {\r\n  background-color: #9cccd2;\r\n}\r\n.purple {\r\n  color: #800080;\r\n}\r\n.Purple {\r\n  background-color: #800080;\r\n}\r\n.hPurple {\r\n  background-color: #800080;\r\n}\r\n.hPurple:not(.disabled):hover {\r\n  background-color: #941494;\r\n}\r\n.hPurple:not(.disabled):active {\r\n  background-color: #6c006c;\r\n}\r\n.red {\r\n  color: #ff0000;\r\n}\r\n.Red {\r\n  background-color: #ff0000;\r\n}\r\n.hRed {\r\n  background-color: #ff0000;\r\n}\r\n.hRed:not(.disabled):hover {\r\n  background-color: #ff1414;\r\n}\r\n.hRed:not(.disabled):active {\r\n  background-color: #eb0000;\r\n}\r\n.rosybrown {\r\n  color: #bc8f8f;\r\n}\r\n.Rosybrown {\r\n  background-color: #bc8f8f;\r\n}\r\n.hRosybrown {\r\n  background-color: #bc8f8f;\r\n}\r\n.hRosybrown:not(.disabled):hover {\r\n  background-color: #d0a3a3;\r\n}\r\n.hRosybrown:not(.disabled):active {\r\n  background-color: #a87b7b;\r\n}\r\n.royalblue {\r\n  color: #4169e1;\r\n}\r\n.Royalblue {\r\n  background-color: #4169e1;\r\n}\r\n.hRoyalblue {\r\n  background-color: #4169e1;\r\n}\r\n.hRoyalblue:not(.disabled):hover {\r\n  background-color: #557df5;\r\n}\r\n.hRoyalblue:not(.disabled):active {\r\n  background-color: #2d55cd;\r\n}\r\n.saddlebrown {\r\n  color: #8b4513;\r\n}\r\n.Saddlebrown {\r\n  background-color: #8b4513;\r\n}\r\n.hSaddlebrown {\r\n  background-color: #8b4513;\r\n}\r\n.hSaddlebrown:not(.disabled):hover {\r\n  background-color: #9f5927;\r\n}\r\n.hSaddlebrown:not(.disabled):active {\r\n  background-color: #773100;\r\n}\r\n.salmon {\r\n  color: #fa8072;\r\n}\r\n.Salmon {\r\n  background-color: #fa8072;\r\n}\r\n.hSalmon {\r\n  background-color: #fa8072;\r\n}\r\n.hSalmon:not(.disabled):hover {\r\n  background-color: #ff9486;\r\n}\r\n.hSalmon:not(.disabled):active {\r\n  background-color: #e66c5e;\r\n}\r\n.sandybrown {\r\n  color: #f4a460;\r\n}\r\n.Sandybrown {\r\n  background-color: #f4a460;\r\n}\r\n.hSandybrown {\r\n  background-color: #f4a460;\r\n}\r\n.hSandybrown:not(.disabled):hover {\r\n  background-color: #ffb874;\r\n}\r\n.hSandybrown:not(.disabled):active {\r\n  background-color: #e0904c;\r\n}\r\n.seagreen {\r\n  color: #2e8b57;\r\n}\r\n.Seagreen {\r\n  background-color: #2e8b57;\r\n}\r\n.hSeagreen {\r\n  background-color: #2e8b57;\r\n}\r\n.hSeagreen:not(.disabled):hover {\r\n  background-color: #429f6b;\r\n}\r\n.hSeagreen:not(.disabled):active {\r\n  background-color: #1a7743;\r\n}\r\n.seashell {\r\n  color: #fff5ee;\r\n}\r\n.Seashell {\r\n  background-color: #fff5ee;\r\n}\r\n.hSeashell {\r\n  background-color: #fff5ee;\r\n}\r\n.hSeashell:not(.disabled):hover {\r\n  background-color: #ffffff;\r\n}\r\n.hSeashell:not(.disabled):active {\r\n  background-color: #ebe1da;\r\n}\r\n.sienna {\r\n  color: #a0522d;\r\n}\r\n.Sienna {\r\n  background-color: #a0522d;\r\n}\r\n.hSienna {\r\n  background-color: #a0522d;\r\n}\r\n.hSienna:not(.disabled):hover {\r\n  background-color: #b46641;\r\n}\r\n.hSienna:not(.disabled):active {\r\n  background-color: #8c3e19;\r\n}\r\n.silver {\r\n  color: #c0c0c0;\r\n}\r\n.Silver {\r\n  background-color: #c0c0c0;\r\n}\r\n.hSilver {\r\n  background-color: #c0c0c0;\r\n}\r\n.hSilver:not(.disabled):hover {\r\n  background-color: #d4d4d4;\r\n}\r\n.hSilver:not(.disabled):active {\r\n  background-color: #acacac;\r\n}\r\n.skyblue {\r\n  color: #87ceeb;\r\n}\r\n.Skyblue {\r\n  background-color: #87ceeb;\r\n}\r\n.hSkyblue {\r\n  background-color: #87ceeb;\r\n}\r\n.hSkyblue:not(.disabled):hover {\r\n  background-color: #9be2ff;\r\n}\r\n.hSkyblue:not(.disabled):active {\r\n  background-color: #73bad7;\r\n}\r\n.slateblue {\r\n  color: #6a5acd;\r\n}\r\n.Slateblue {\r\n  background-color: #6a5acd;\r\n}\r\n.hSlateblue {\r\n  background-color: #6a5acd;\r\n}\r\n.hSlateblue:not(.disabled):hover {\r\n  background-color: #7e6ee1;\r\n}\r\n.hSlateblue:not(.disabled):active {\r\n  background-color: #5646b9;\r\n}\r\n.slategray {\r\n  color: #708090;\r\n}\r\n.Slategray {\r\n  background-color: #708090;\r\n}\r\n.hSlategray {\r\n  background-color: #708090;\r\n}\r\n.hSlategray:not(.disabled):hover {\r\n  background-color: #8494a4;\r\n}\r\n.hSlategray:not(.disabled):active {\r\n  background-color: #5c6c7c;\r\n}\r\n.snow {\r\n  color: #fffafa;\r\n}\r\n.Snow {\r\n  background-color: #fffafa;\r\n}\r\n.hSnow {\r\n  background-color: #fffafa;\r\n}\r\n.hSnow:not(.disabled):hover {\r\n  background-color: #ffffff;\r\n}\r\n.hSnow:not(.disabled):active {\r\n  background-color: #ebe6e6;\r\n}\r\n.springgreen {\r\n  color: #00ff7f;\r\n}\r\n.Springgreen {\r\n  background-color: #00ff7f;\r\n}\r\n.hSpringgreen {\r\n  background-color: #00ff7f;\r\n}\r\n.hSpringgreen:not(.disabled):hover {\r\n  background-color: #14ff93;\r\n}\r\n.hSpringgreen:not(.disabled):active {\r\n  background-color: #00eb6b;\r\n}\r\n.steelblue {\r\n  color: #4682b4;\r\n}\r\n.Steelblue {\r\n  background-color: #4682b4;\r\n}\r\n.hSteelblue {\r\n  background-color: #4682b4;\r\n}\r\n.hSteelblue:not(.disabled):hover {\r\n  background-color: #5a96c8;\r\n}\r\n.hSteelblue:not(.disabled):active {\r\n  background-color: #326ea0;\r\n}\r\n.tan {\r\n  color: #d2b48c;\r\n}\r\n.Tan {\r\n  background-color: #d2b48c;\r\n}\r\n.hTan {\r\n  background-color: #d2b48c;\r\n}\r\n.hTan:not(.disabled):hover {\r\n  background-color: #e6c8a0;\r\n}\r\n.hTan:not(.disabled):active {\r\n  background-color: #bea078;\r\n}\r\n.teal {\r\n  color: #008080;\r\n}\r\n.Teal {\r\n  background-color: #008080;\r\n}\r\n.hTeal {\r\n  background-color: #008080;\r\n}\r\n.hTeal:not(.disabled):hover {\r\n  background-color: #149494;\r\n}\r\n.hTeal:not(.disabled):active {\r\n  background-color: #006c6c;\r\n}\r\n.thistle {\r\n  color: #d8bfd8;\r\n}\r\n.Thistle {\r\n  background-color: #d8bfd8;\r\n}\r\n.hThistle {\r\n  background-color: #d8bfd8;\r\n}\r\n.hThistle:not(.disabled):hover {\r\n  background-color: #ecd3ec;\r\n}\r\n.hThistle:not(.disabled):active {\r\n  background-color: #c4abc4;\r\n}\r\n.tomato {\r\n  color: #ff6347;\r\n}\r\n.Tomato {\r\n  background-color: #ff6347;\r\n}\r\n.hTomato {\r\n  background-color: #ff6347;\r\n}\r\n.hTomato:not(.disabled):hover {\r\n  background-color: #ff775b;\r\n}\r\n.hTomato:not(.disabled):active {\r\n  background-color: #eb4f33;\r\n}\r\n.turquoise {\r\n  color: #40e0d0;\r\n}\r\n.Turquoise {\r\n  background-color: #40e0d0;\r\n}\r\n.hTurquoise {\r\n  background-color: #40e0d0;\r\n}\r\n.hTurquoise:not(.disabled):hover {\r\n  background-color: #54f4e4;\r\n}\r\n.hTurquoise:not(.disabled):active {\r\n  background-color: #2cccbc;\r\n}\r\n.violet {\r\n  color: #ee82ee;\r\n}\r\n.Violet {\r\n  background-color: #ee82ee;\r\n}\r\n.hViolet {\r\n  background-color: #ee82ee;\r\n}\r\n.hViolet:not(.disabled):hover {\r\n  background-color: #ff96ff;\r\n}\r\n.hViolet:not(.disabled):active {\r\n  background-color: #da6eda;\r\n}\r\n.wheat {\r\n  color: #f5deb3;\r\n}\r\n.Wheat {\r\n  background-color: #f5deb3;\r\n}\r\n.hWheat {\r\n  background-color: #f5deb3;\r\n}\r\n.hWheat:not(.disabled):hover {\r\n  background-color: #fff2c7;\r\n}\r\n.hWheat:not(.disabled):active {\r\n  background-color: #e1ca9f;\r\n}\r\n.white {\r\n  color: #ffffff;\r\n}\r\n.White {\r\n  background-color: #ffffff;\r\n}\r\n.hWhite {\r\n  background-color: #ffffff;\r\n}\r\n.hWhite:not(.disabled):hover {\r\n  background-color: #ffffff;\r\n}\r\n.hWhite:not(.disabled):active {\r\n  background-color: #ebebeb;\r\n}\r\n.whitesmoke {\r\n  color: #f5f5f5;\r\n}\r\n.Whitesmoke {\r\n  background-color: #f5f5f5;\r\n}\r\n.hWhitesmoke {\r\n  background-color: #f5f5f5;\r\n}\r\n.hWhitesmoke:not(.disabled):hover {\r\n  background-color: #ffffff;\r\n}\r\n.hWhitesmoke:not(.disabled):active {\r\n  background-color: #e1e1e1;\r\n}\r\n.yellow {\r\n  color: #ffff00;\r\n}\r\n.Yellow {\r\n  background-color: #ffff00;\r\n}\r\n.hYellow {\r\n  background-color: #ffff00;\r\n}\r\n.hYellow:not(.disabled):hover {\r\n  background-color: #ffff14;\r\n}\r\n.hYellow:not(.disabled):active {\r\n  background-color: #ebeb00;\r\n}\r\n.yellowgreen {\r\n  color: #9acd32;\r\n}\r\n.Yellowgreen {\r\n  background-color: #9acd32;\r\n}\r\n.hYellowgreen {\r\n  background-color: #9acd32;\r\n}\r\n.hYellowgreen:not(.disabled):hover {\r\n  background-color: #aee146;\r\n}\r\n.hYellowgreen:not(.disabled):active {\r\n  background-color: #86b91e;\r\n}\r\n.sp2 {\r\n  width: 2px;\r\n}\r\n.spv2 {\r\n  height: 2px;\r\n}\r\n.sp4 {\r\n  width: 4px;\r\n}\r\n.spv4 {\r\n  height: 4px;\r\n}\r\n.sp8 {\r\n  width: 8px;\r\n}\r\n.spv8 {\r\n  height: 8px;\r\n}\r\n.sp16 {\r\n  width: 16px;\r\n}\r\n.spv16 {\r\n  height: 16px;\r\n}\r\n.sp32 {\r\n  width: 32px;\r\n}\r\n.spv32 {\r\n  height: 32px;\r\n}\r\n.sp64 {\r\n  width: 64px;\r\n}\r\n.spv64 {\r\n  height: 64px;\r\n}\r\n.op5 {\r\n  opacity: .5;\r\n}\r\n.op10 {\r\n  opacity: .10;\r\n}\r\n.op15 {\r\n  opacity: .15;\r\n}\r\n.op20 {\r\n  opacity: .20;\r\n}\r\n.op25 {\r\n  opacity: .25;\r\n}\r\n.op30 {\r\n  opacity: .30;\r\n}\r\n.op35 {\r\n  opacity: .35;\r\n}\r\n.op40 {\r\n  opacity: .40;\r\n}\r\n.op45 {\r\n  opacity: .45;\r\n}\r\n.op50 {\r\n  opacity: .50;\r\n}\r\n.op55 {\r\n  opacity: .55;\r\n}\r\n.op60 {\r\n  opacity: .60;\r\n}\r\n.op65 {\r\n  opacity: .65;\r\n}\r\n.op70 {\r\n  opacity: .70;\r\n}\r\n.op75 {\r\n  opacity: .75;\r\n}\r\n.op80 {\r\n  opacity: .80;\r\n}\r\n.op85 {\r\n  opacity: .85;\r\n}\r\n.op90 {\r\n  opacity: .90;\r\n}\r\n.op95 {\r\n  opacity: .95;\r\n}\r\n.aic {\r\n  align-items: center;\r\n}\r\n.aife {\r\n  align-items: flex-end;\r\n}\r\n.aifs {\r\n  align-items: flex-start;\r\n}\r\n.ais {\r\n  align-items: stretch;\r\n}\r\n.cp {\r\n  cursor: pointer;\r\n}\r\n.f {\r\n  display: flex;\r\n}\r\n.f00a {\r\n  flex: 0 0 auto;\r\n}\r\n.fc {\r\n  display: flex;\r\n  align-items: center;\r\n  justify-content: center;\r\n  text-align: center;\r\n}\r\n.fv {\r\n  display: flex;\r\n  flex-direction: column;\r\n}\r\n.fw {\r\n  display: flex;\r\n  flex-wrap: wrap;\r\n}\r\n.fg0 {\r\n  flex-grow: 0;\r\n}\r\n.fg1 {\r\n  flex-grow: 1;\r\n}\r\n.fs0 {\r\n  flex-shrink: 0;\r\n}\r\n.fs1 {\r\n  flex-shrink: 1;\r\n}\r\n.jcs {\r\n  justify-content: start;\r\n}\r\n.jce {\r\n  justify-content: end;\r\n}\r\n.jcc {\r\n  justify-content: center;\r\n}\r\n.jcsb {\r\n  justify-content: space-between;\r\n}\r\n.jcsa {\r\n  justify-content: space-around;\r\n}\r\n.oa {\r\n  overflow: auto;\r\n}\r\n.oh {\r\n  overflow: hidden;\r\n}\r\n.os {\r\n  overflow: scroll;\r\n}\r\n.ov {\r\n  overflow: visible;\r\n}\r\n.oxa {\r\n  overflow-x: auto;\r\n}\r\n.oxh {\r\n  overflow-x: hidden;\r\n}\r\n.oxs {\r\n  overflow-x: scroll;\r\n}\r\n.oxv {\r\n  overflow-x: visible;\r\n}\r\n.oya {\r\n  overflow-y: auto;\r\n}\r\n.oyh {\r\n  overflow-y: hidden;\r\n}\r\n.oys {\r\n  overflow-y: scroll;\r\n}\r\n.oyv {\r\n  overflow-y: visible;\r\n}\r\n.pa {\r\n  position: absolute;\r\n}\r\n.pf {\r\n  position: fixed;\r\n}\r\n.pr {\r\n  position: relative;\r\n}\r\n.ps {\r\n  position: static;\r\n}\r\n.tac {\r\n  text-align: center;\r\n}\r\n.tar {\r\n  text-align: right;\r\n}\r\n.tdn {\r\n  text-decoration: none;\r\n}\r\n.usn {\r\n  user-select: none;\r\n}\r\n.vab {\r\n  vertical-align: bottom;\r\n}\r\n.vabl {\r\n  vertical-align: baseline;\r\n}\r\n.vam {\r\n  vertical-align: middle;\r\n}\r\n.vat {\r\n  vertical-align: top;\r\n}\r\n.vatb {\r\n  vertical-align: text-bottom;\r\n}\r\n.vatt {\r\n  vertical-align: text-top;\r\n}\r\n.vc {\r\n  visibility: collapse;\r\n}\r\n.vh {\r\n  visibility: hidden;\r\n}\r\n.vv {\r\n  visibility: visible;\r\n}\r\n.hr {\r\n  border-color: rgba(250,250,250,.5);\r\n  width: 100%;\r\n  margin: 0;\r\n}\r\n.li:hover {\r\n  background-color: lavender;\r\n}", ""]);
-
-// exports
-
-
-/***/ }),
-/* 5 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(0)();
-// imports
-
-
-// module
-exports.push([module.i, "body {\r\n  margin: 0;\r\n  background-image: linear-gradient(to top right, black, lightgrey);\r\n  width: 100vw;\r\n  height: 100vh;\r\n  font-family: 'Ubuntu';\r\n  text-shadow: 2px 2px 3px #333;\r\n  color:  white\r\n}\r\n\r\n#header {\r\n  height: 20vh;\r\n  font-size: 3em;\r\n  line-height: 20vh;\r\n  vertical-align: middle;\r\n  text-align: center;\r\n  font-weight: bold;\r\n}\r\n\r\n#main1 {\r\n  width: 75vw;\r\n  height: 75vh;\r\n  margin: 0 auto;\r\n}\r\n\r\n#main1 div {\r\n  height: 10vh;\r\n  font-size: 2em;\r\n}\r\n\r\n#code {\r\n  width: 90vw;\r\n  height: 75vh;\r\n  margin: 0 auto;\r\n}\r\n\r\n#page {\r\n  position: absolute; \r\n  padding-right: 10px;\r\n  padding-bottom: 10px;\r\n  bottom: 0px;\r\n  right: 0px;\r\n}\r\n\r\niframe {\r\n  width: 100%;\r\n  height: 100%;    \r\n}\r\n\r\n.code5, .code6, .code51 {\r\n  font-family: 'Consolas';\r\n  font-size: 0.8em;\r\n}\r\n\r\n.code5, .code51 {\r\n  color: yellow;    \r\n}\r\n\r\n.code6 {\r\n  color: yellowgreen;    \r\n}\r\n\r\n.code51 {\r\n  padding-left: 50px;    \r\n}\r\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 6 */
 /***/ (function(module, exports) {
 
 
@@ -10458,98 +10175,274 @@ for (var publicModule in Elm)
 
 
 /***/ }),
-/* 7 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__.p + "674f50d287a8c48dc19ba404d20fe713.eot";
-
-/***/ }),
-/* 8 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__.p + "674f50d287a8c48dc19ba404d20fe713.eot";
-
-/***/ }),
-/* 9 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__.p + "912ec66d7572ff821749319396470bde.svg";
-
-/***/ }),
-/* 10 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__.p + "b06871f281fee6b241d60582ae9369b9.ttf";
-
-/***/ }),
-/* 11 */
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__.p + "index.html";
 
 /***/ }),
-/* 12 */
-/***/ (function(module, exports, __webpack_require__) {
+/* 5 */
+/***/ (function(module, exports) {
 
-// style-loader: Adds some css to the DOM by adding a <style> tag
+/*
+	MIT License http://www.opensource.org/licenses/mit-license.php
+	Author Tobias Koppers @sokra
+*/
+var stylesInDom = {},
+	memoize = function(fn) {
+		var memo;
+		return function () {
+			if (typeof memo === "undefined") memo = fn.apply(this, arguments);
+			return memo;
+		};
+	},
+	isOldIE = memoize(function() {
+		return /msie [6-9]\b/.test(self.navigator.userAgent.toLowerCase());
+	}),
+	getHeadElement = memoize(function () {
+		return document.head || document.getElementsByTagName("head")[0];
+	}),
+	singletonElement = null,
+	singletonCounter = 0,
+	styleElementsInsertedAtTop = [];
 
-// load the styles
-var content = __webpack_require__(3);
-if(typeof content === 'string') content = [[module.i, content, '']];
-// add the styles to the DOM
-var update = __webpack_require__(1)(content, {});
-if(content.locals) module.exports = content.locals;
-// Hot Module Replacement
-if(false) {
-	// When the styles change, update the <style> tags
-	if(!content.locals) {
-		module.hot.accept("!!../../css-loader/index.js!./font-awesome.css", function() {
-			var newContent = require("!!../../css-loader/index.js!./font-awesome.css");
-			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-			update(newContent);
-		});
+module.exports = function(list, options) {
+	if(typeof DEBUG !== "undefined" && DEBUG) {
+		if(typeof document !== "object") throw new Error("The style-loader cannot be used in a non-browser environment");
 	}
-	// When the module is disposed, remove the <style> tags
-	module.hot.dispose(function() { update(); });
+
+	options = options || {};
+	// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
+	// tags it will allow on a page
+	if (typeof options.singleton === "undefined") options.singleton = isOldIE();
+
+	// By default, add <style> tags to the bottom of <head>.
+	if (typeof options.insertAt === "undefined") options.insertAt = "bottom";
+
+	var styles = listToStyles(list);
+	addStylesToDom(styles, options);
+
+	return function update(newList) {
+		var mayRemove = [];
+		for(var i = 0; i < styles.length; i++) {
+			var item = styles[i];
+			var domStyle = stylesInDom[item.id];
+			domStyle.refs--;
+			mayRemove.push(domStyle);
+		}
+		if(newList) {
+			var newStyles = listToStyles(newList);
+			addStylesToDom(newStyles, options);
+		}
+		for(var i = 0; i < mayRemove.length; i++) {
+			var domStyle = mayRemove[i];
+			if(domStyle.refs === 0) {
+				for(var j = 0; j < domStyle.parts.length; j++)
+					domStyle.parts[j]();
+				delete stylesInDom[domStyle.id];
+			}
+		}
+	};
 }
 
-/***/ }),
-/* 13 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(4);
-if(typeof content === 'string') content = [[module.i, content, '']];
-// add the styles to the DOM
-var update = __webpack_require__(1)(content, {});
-if(content.locals) module.exports = content.locals;
-// Hot Module Replacement
-if(false) {
-	// When the styles change, update the <style> tags
-	if(!content.locals) {
-		module.hot.accept("!!../../css-loader/index.js!./out.css", function() {
-			var newContent = require("!!../../css-loader/index.js!./out.css");
-			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-			update(newContent);
-		});
+function addStylesToDom(styles, options) {
+	for(var i = 0; i < styles.length; i++) {
+		var item = styles[i];
+		var domStyle = stylesInDom[item.id];
+		if(domStyle) {
+			domStyle.refs++;
+			for(var j = 0; j < domStyle.parts.length; j++) {
+				domStyle.parts[j](item.parts[j]);
+			}
+			for(; j < item.parts.length; j++) {
+				domStyle.parts.push(addStyle(item.parts[j], options));
+			}
+		} else {
+			var parts = [];
+			for(var j = 0; j < item.parts.length; j++) {
+				parts.push(addStyle(item.parts[j], options));
+			}
+			stylesInDom[item.id] = {id: item.id, refs: 1, parts: parts};
+		}
 	}
-	// When the module is disposed, remove the <style> tags
-	module.hot.dispose(function() { update(); });
 }
 
+function listToStyles(list) {
+	var styles = [];
+	var newStyles = {};
+	for(var i = 0; i < list.length; i++) {
+		var item = list[i];
+		var id = item[0];
+		var css = item[1];
+		var media = item[2];
+		var sourceMap = item[3];
+		var part = {css: css, media: media, sourceMap: sourceMap};
+		if(!newStyles[id])
+			styles.push(newStyles[id] = {id: id, parts: [part]});
+		else
+			newStyles[id].parts.push(part);
+	}
+	return styles;
+}
+
+function insertStyleElement(options, styleElement) {
+	var head = getHeadElement();
+	var lastStyleElementInsertedAtTop = styleElementsInsertedAtTop[styleElementsInsertedAtTop.length - 1];
+	if (options.insertAt === "top") {
+		if(!lastStyleElementInsertedAtTop) {
+			head.insertBefore(styleElement, head.firstChild);
+		} else if(lastStyleElementInsertedAtTop.nextSibling) {
+			head.insertBefore(styleElement, lastStyleElementInsertedAtTop.nextSibling);
+		} else {
+			head.appendChild(styleElement);
+		}
+		styleElementsInsertedAtTop.push(styleElement);
+	} else if (options.insertAt === "bottom") {
+		head.appendChild(styleElement);
+	} else {
+		throw new Error("Invalid value for parameter 'insertAt'. Must be 'top' or 'bottom'.");
+	}
+}
+
+function removeStyleElement(styleElement) {
+	styleElement.parentNode.removeChild(styleElement);
+	var idx = styleElementsInsertedAtTop.indexOf(styleElement);
+	if(idx >= 0) {
+		styleElementsInsertedAtTop.splice(idx, 1);
+	}
+}
+
+function createStyleElement(options) {
+	var styleElement = document.createElement("style");
+	styleElement.type = "text/css";
+	insertStyleElement(options, styleElement);
+	return styleElement;
+}
+
+function createLinkElement(options) {
+	var linkElement = document.createElement("link");
+	linkElement.rel = "stylesheet";
+	insertStyleElement(options, linkElement);
+	return linkElement;
+}
+
+function addStyle(obj, options) {
+	var styleElement, update, remove;
+
+	if (options.singleton) {
+		var styleIndex = singletonCounter++;
+		styleElement = singletonElement || (singletonElement = createStyleElement(options));
+		update = applyToSingletonTag.bind(null, styleElement, styleIndex, false);
+		remove = applyToSingletonTag.bind(null, styleElement, styleIndex, true);
+	} else if(obj.sourceMap &&
+		typeof URL === "function" &&
+		typeof URL.createObjectURL === "function" &&
+		typeof URL.revokeObjectURL === "function" &&
+		typeof Blob === "function" &&
+		typeof btoa === "function") {
+		styleElement = createLinkElement(options);
+		update = updateLink.bind(null, styleElement);
+		remove = function() {
+			removeStyleElement(styleElement);
+			if(styleElement.href)
+				URL.revokeObjectURL(styleElement.href);
+		};
+	} else {
+		styleElement = createStyleElement(options);
+		update = applyToTag.bind(null, styleElement);
+		remove = function() {
+			removeStyleElement(styleElement);
+		};
+	}
+
+	update(obj);
+
+	return function updateStyle(newObj) {
+		if(newObj) {
+			if(newObj.css === obj.css && newObj.media === obj.media && newObj.sourceMap === obj.sourceMap)
+				return;
+			update(obj = newObj);
+		} else {
+			remove();
+		}
+	};
+}
+
+var replaceText = (function () {
+	var textStore = [];
+
+	return function (index, replacement) {
+		textStore[index] = replacement;
+		return textStore.filter(Boolean).join('\n');
+	};
+})();
+
+function applyToSingletonTag(styleElement, index, remove, obj) {
+	var css = remove ? "" : obj.css;
+
+	if (styleElement.styleSheet) {
+		styleElement.styleSheet.cssText = replaceText(index, css);
+	} else {
+		var cssNode = document.createTextNode(css);
+		var childNodes = styleElement.childNodes;
+		if (childNodes[index]) styleElement.removeChild(childNodes[index]);
+		if (childNodes.length) {
+			styleElement.insertBefore(cssNode, childNodes[index]);
+		} else {
+			styleElement.appendChild(cssNode);
+		}
+	}
+}
+
+function applyToTag(styleElement, obj) {
+	var css = obj.css;
+	var media = obj.media;
+
+	if(media) {
+		styleElement.setAttribute("media", media)
+	}
+
+	if(styleElement.styleSheet) {
+		styleElement.styleSheet.cssText = css;
+	} else {
+		while(styleElement.firstChild) {
+			styleElement.removeChild(styleElement.firstChild);
+		}
+		styleElement.appendChild(document.createTextNode(css));
+	}
+}
+
+function updateLink(linkElement, obj) {
+	var css = obj.css;
+	var sourceMap = obj.sourceMap;
+
+	if(sourceMap) {
+		// http://stackoverflow.com/a/26603875
+		css += "\n/*# sourceMappingURL=data:application/json;base64," + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + " */";
+	}
+
+	var blob = new Blob([css], { type: "text/css" });
+
+	var oldSrc = linkElement.href;
+
+	linkElement.href = URL.createObjectURL(blob);
+
+	if(oldSrc)
+		URL.revokeObjectURL(oldSrc);
+}
+
+
 /***/ }),
-/* 14 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(5);
+var content = __webpack_require__(1);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
-var update = __webpack_require__(1)(content, {});
+var update = __webpack_require__(5)(content, {});
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -10566,22 +10459,10 @@ if(false) {
 }
 
 /***/ }),
-/* 15 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__.p + "af7ae505a9eed503f8b8e6982036873e.woff2";
-
-/***/ }),
-/* 16 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__.p + "fee66e712a8a08eef5805a46892932ad.woff";
-
-/***/ }),
-/* 17 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(2);
+module.exports = __webpack_require__(0);
 
 
 /***/ })
