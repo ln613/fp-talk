@@ -9631,7 +9631,7 @@ var _user$project$Models$initialModel = {
 																															_0: 'ReactiveX operators',
 																															_1: {
 																																ctor: '::',
-																																_0: '&map, filter, reduce (scan, fold), combine, merge...',
+																																_0: '&map, filter, reduce(scan), combine, merge...',
 																																_1: {ctor: '[]'}
 																															}
 																														}

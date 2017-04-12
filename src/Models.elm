@@ -35,7 +35,7 @@ initialModel =
       Page "Redux" "" [ "Single global store", "Events -> Actions", "Reducer", "&(state, action) -> state" ],
       Page "React + Redux" "&PRCmpV0LTyVCRwEcSQIR" [],
       Page "Redux middlewares" "" [ "Redux-thunk", "Redux-promise", "Redux-saga", "Redux-observable" ],
-      Page "Functional Reactive Programming" "" [ "Reactive Programming", "&a -> b, a$ -> b$, Observable", "Observable vs Promise", "&cancel, retry, debounce...", "Functional Reactive Programming", "&Array in the future, lazy", "ReactiveX operators", "&map, filter, reduce (scan, fold), combine, merge..." ],
+      Page "Functional Reactive Programming" "" [ "Reactive Programming", "&a -> b, a$ -> b$, Observable", "Observable vs Promise", "&cancel, retry, debounce...", "Functional Reactive Programming", "&Array in the future, lazy", "ReactiveX operators", "&map, filter, reduce(scan), combine, merge..." ],
       Page "React + Redux + Redux-Observable" "&aMJPRyA3a9SOHwOAocGj" [],
       Page "React - Final Version - Purely Functional" "&8kl06czG0QvYPh6ifEWR" [],
       Page "AutoComplete" "&X9shFacgc7dgGmLs3Vjr" [],
