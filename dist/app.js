@@ -9376,29 +9376,57 @@ var _user$project$Models$initialModel = {
 			_user$project$Models$Page,
 			'JavaScript and the Rise of Functional Programming',
 			'',
-			{ctor: '[]'}),
+			{
+				ctor: '::',
+				_0: '',
+				_1: {
+					ctor: '::',
+					_0: 'Functional Programming concepts',
+					_1: {
+						ctor: '::',
+						_0: 'JavaScript frameworks',
+						_1: {
+							ctor: '::',
+							_0: '&React + Redux, Angular 2, Vue, Cycle',
+							_1: {
+								ctor: '::',
+								_0: 'Elm',
+								_1: {ctor: '[]'}
+							}
+						}
+					}
+				}
+			}),
 		_1: {
 			ctor: '::',
 			_0: A3(
 				_user$project$Models$Page,
-				'Agenda',
+				'Imperative vs Declarative',
 				'',
 				{
 					ctor: '::',
-					_0: 'OOP vs FP',
+					_0: 'Imperative',
 					_1: {
 						ctor: '::',
-						_0: 'Functional Programming concepts',
+						_0: '&How (Implements logic in explicit steps)',
 						_1: {
 							ctor: '::',
-							_0: 'JavaScript frameworks',
+							_0: '&C, C++, C#, Java, JavaScript, Ruby, Python...',
 							_1: {
 								ctor: '::',
-								_0: '&React + Redux, Angular 2, Vue, Cycle',
+								_0: 'Declarative',
 								_1: {
 									ctor: '::',
-									_0: 'Elm',
-									_1: {ctor: '[]'}
+									_0: '&What (Describe what the program will achieve)',
+									_1: {
+										ctor: '::',
+										_0: '&Functional, logic (Prolog), db query (SQL)',
+										_1: {
+											ctor: '::',
+											_0: '&Haskell, Lisp, Erlang, F#, Scala, Clojure, Elm...',
+											_1: {ctor: '[]'}
+										}
+									}
 								}
 							}
 						}
@@ -9408,80 +9436,92 @@ var _user$project$Models$initialModel = {
 				ctor: '::',
 				_0: A3(
 					_user$project$Models$Page,
-					'Imperative vs Declarative',
-					'',
-					{
-						ctor: '::',
-						_0: 'Imperative',
-						_1: {
-							ctor: '::',
-							_0: '&How (Implements logic in explicit steps)',
-							_1: {
-								ctor: '::',
-								_0: '&C, C++, C#, Java, JavaScript, Ruby, Python...',
-								_1: {
-									ctor: '::',
-									_0: 'Declarative',
-									_1: {
-										ctor: '::',
-										_0: '&What (Describe what the program will achieve)',
-										_1: {
-											ctor: '::',
-											_0: '&Functional, logic (Prolog), db query (SQL)',
-											_1: {
-												ctor: '::',
-												_0: '&Haskell, Lisp, Erlang, F#, Scala, Clojure, Elm...',
-												_1: {ctor: '[]'}
-											}
-										}
-									}
-								}
-							}
-						}
-					}),
+					'Quick Sort - the imperative way',
+					'&UdkRalSPm56TXldzanZK',
+					{ctor: '[]'}),
 				_1: {
 					ctor: '::',
 					_0: A3(
 						_user$project$Models$Page,
-						'Quick Sort - the imperative way',
-						'&UdkRalSPm56TXldzanZK',
+						'Quick Sort - the functional way',
+						'&hIlpH2ZOV2X1d66B1qXn',
 						{ctor: '[]'}),
 					_1: {
 						ctor: '::',
 						_0: A3(
 							_user$project$Models$Page,
-							'Quick Sort - the functional way',
-							'&hIlpH2ZOV2X1d66B1qXn',
+							'Quick Sort - Elm',
+							'$2T7nr9SrJPKa1',
 							{ctor: '[]'}),
 						_1: {
 							ctor: '::',
 							_0: A3(
 								_user$project$Models$Page,
-								'Quick Sort - Elm',
-								'$2T7nr9SrJPKa1',
-								{ctor: '[]'}),
+								'What is Functional Programming',
+								'',
+								{
+									ctor: '::',
+									_0: 'No statements',
+									_1: {
+										ctor: '::',
+										_0: '&No assignment, no state/variable',
+										_1: {
+											ctor: '::',
+											_0: '&No side effect',
+											_1: {
+												ctor: '::',
+												_0: '&Pure function',
+												_1: {
+													ctor: '::',
+													_0: 'Never \"do\" anything, always return new values based on input',
+													_1: {
+														ctor: '::',
+														_0: 'A series of data transformation',
+														_1: {
+															ctor: '::',
+															_0: 'Data in, data out',
+															_1: {ctor: '[]'}
+														}
+													}
+												}
+											}
+										}
+									}
+								}),
 							_1: {
 								ctor: '::',
 								_0: A3(
 									_user$project$Models$Page,
-									'Imperative language structure',
+									'What is Side Effect',
 									'',
 									{
 										ctor: '::',
-										_0: 'A series of statements',
+										_0: 'Depend on/change the outside environment',
 										_1: {
 											ctor: '::',
-											_0: '&Statement = \"do\" something = \"how\"',
+											_0: '&Draw UI on screen',
 											_1: {
 												ctor: '::',
-												_0: 'Flow control',
+												_0: '&Make http calls',
 												_1: {
 													ctor: '::',
-													_0: '&conditional',
+													_0: '&Read from/write to shared variables',
 													_1: {
 														ctor: '::',
-														_0: '&loop',
-														_1: {ctor: '[]'}
+														_0: '&Database/File access',
+														_1: {
+															ctor: '::',
+															_0: '&Console.log',
+															_1: {
+																ctor: '::',
+																_0: 'Unpredictable, unreliable, harder to test',
+																_1: {
+																	ctor: '::',
+																	_0: 'Everywhere in imperative language, nowhere in FP',
+																	_1: {ctor: '[]'}
+																}
+															}
+														}
 													}
 												}
 											}
@@ -9491,31 +9531,27 @@ var _user$project$Models$initialModel = {
 									ctor: '::',
 									_0: A3(
 										_user$project$Models$Page,
-										'What is Functional Programming',
+										'What is Pure Function',
 										'',
 										{
 											ctor: '::',
-											_0: 'No statements',
+											_0: 'No side effects',
 											_1: {
 												ctor: '::',
-												_0: '&No assignment, stateless (no variables)',
+												_0: 'Always returns a value',
 												_1: {
 													ctor: '::',
-													_0: '&No side effect',
+													_0: '&Procedures always \"do\" something (side effect)',
 													_1: {
 														ctor: '::',
-														_0: '&Pure function',
+														_0: 'Output only depends on input',
 														_1: {
 															ctor: '::',
-															_0: 'Never \"do\" anything, always return new values based on input',
+															_0: 'Given the same input, always produce the same output',
 															_1: {
 																ctor: '::',
-																_0: 'A series of data transformation',
-																_1: {
-																	ctor: '::',
-																	_0: 'Data in, data out',
-																	_1: {ctor: '[]'}
-																}
+																_0: 'Mathmatical function',
+																_1: {ctor: '[]'}
 															}
 														}
 													}
@@ -9526,32 +9562,24 @@ var _user$project$Models$initialModel = {
 										ctor: '::',
 										_0: A3(
 											_user$project$Models$Page,
-											'What is Side Effect',
+											'Side effects still need to be done',
 											'',
 											{
 												ctor: '::',
-												_0: 'Depend on/change the outside environment',
+												_0: 'If we don\'t do it, who\'s gonna do it?',
 												_1: {
 													ctor: '::',
-													_0: '&Draw UI on screen',
+													_0: 'Frameworks, language runtime',
 													_1: {
 														ctor: '::',
-														_0: '&Make http calls',
+														_0: 'We produce data that represent the things we want to do',
 														_1: {
 															ctor: '::',
-															_0: '&Read from/write to shared variables',
+															_0: 'Our code are kept pure/functional',
 															_1: {
 																ctor: '::',
-																_0: '&Database/File access',
-																_1: {
-																	ctor: '::',
-																	_0: '&Console.log',
-																	_1: {
-																		ctor: '::',
-																		_0: 'Not predictable',
-																		_1: {ctor: '[]'}
-																	}
-																}
+																_0: 'We don\'t do the dirty jobs',
+																_1: {ctor: '[]'}
 															}
 														}
 													}
@@ -9561,27 +9589,35 @@ var _user$project$Models$initialModel = {
 											ctor: '::',
 											_0: A3(
 												_user$project$Models$Page,
-												'What is Pure Function',
+												'Why Functional Programming',
 												'',
 												{
 													ctor: '::',
-													_0: 'No side effects',
+													_0: 'A strong promise that our code will not change anything',
 													_1: {
 														ctor: '::',
-														_0: 'Always returns a value',
+														_0: 'Predictable, Confidence, better code quality',
 														_1: {
 															ctor: '::',
-															_0: '&Procedures always \"do\" something (side effect)',
+															_0: 'Fewer bugs because we don\'t \"do\" anything',
 															_1: {
 																ctor: '::',
-																_0: 'Output only depends on input',
+																_0: 'Easy to test',
 																_1: {
 																	ctor: '::',
-																	_0: 'Given the same input, always produce the same output',
+																	_0: 'Pure functions will never break existing features',
 																	_1: {
 																		ctor: '::',
-																		_0: 'Mathmatical function',
-																		_1: {ctor: '[]'}
+																		_0: 'No regression tests anymore',
+																		_1: {
+																			ctor: '::',
+																			_0: 'No concurrency issues, perfect for parallel programming',
+																			_1: {
+																				ctor: '::',
+																				_0: 'Better performance in some scenarios (e.g., Virtual DOM)',
+																				_1: {ctor: '[]'}
+																			}
+																		}
 																	}
 																}
 															}
@@ -9592,21 +9628,37 @@ var _user$project$Models$initialModel = {
 												ctor: '::',
 												_0: A3(
 													_user$project$Models$Page,
-													'Side effects still need to be done',
+													'Can OOP be functional?',
 													'',
 													{
 														ctor: '::',
-														_0: 'If we don\'t do it, who\'s gonna do it?',
+														_0: 'An add-on to imperative language',
 														_1: {
 															ctor: '::',
-															_0: 'Frameworks, language runtime',
+															_0: 'Static type system',
 															_1: {
 																ctor: '::',
-																_0: 'We produce data that represent the things we want to do',
+																_0: 'Divide and conquer, better structure, worse state management',
 																_1: {
 																	ctor: '::',
-																	_0: 'Our code are kept pure/functional',
-																	_1: {ctor: '[]'}
+																	_0: 'Encapsulation (black box, hide implementation detail)',
+																	_1: {
+																		ctor: '::',
+																		_0: 'No discipline, no confidence',
+																		_1: {
+																			ctor: '::',
+																			_0: 'Stateful (fields = shared states, methods not pure)',
+																			_1: {
+																				ctor: '::',
+																				_0: 'Pure functions = static functions, pure class = utility class (Math)',
+																				_1: {
+																					ctor: '::',
+																					_0: 'OOP and FP co-exist',
+																					_1: {ctor: '[]'}
+																				}
+																			}
+																		}
+																	}
 																}
 															}
 														}
@@ -9615,37 +9667,21 @@ var _user$project$Models$initialModel = {
 													ctor: '::',
 													_0: A3(
 														_user$project$Models$Page,
-														'Why Functional Programming',
+														'Why FP not popular in the past',
 														'',
 														{
 															ctor: '::',
-															_0: 'A strong promise that our code will not change anything',
+															_0: 'More memory consumption',
 															_1: {
 																ctor: '::',
-																_0: 'Predictable, Confidence, better code quality',
+																_0: 'Multi-core/Parallel programming',
 																_1: {
 																	ctor: '::',
-																	_0: 'Fewer bugs because we don\'t \"do\" anything',
+																	_0: 'OOP dominance',
 																	_1: {
 																		ctor: '::',
-																		_0: 'Easy to test',
-																		_1: {
-																			ctor: '::',
-																			_0: 'Pure functions will never break existing features',
-																			_1: {
-																				ctor: '::',
-																				_0: 'No regression tests anymore',
-																				_1: {
-																					ctor: '::',
-																					_0: 'No concurrency/threading issues, perfect for parallel programming',
-																					_1: {
-																						ctor: '::',
-																						_0: 'Better performance in some scenarios (e.g., Virtual DOM)',
-																						_1: {ctor: '[]'}
-																					}
-																				}
-																			}
-																		}
+																		_0: 'Getting popular thanks to JavaScript and open source',
+																		_1: {ctor: '[]'}
 																	}
 																}
 															}
@@ -9654,18 +9690,26 @@ var _user$project$Models$initialModel = {
 														ctor: '::',
 														_0: A3(
 															_user$project$Models$Page,
-															'Change - a computer concept',
+															'What makes FP possible',
 															'',
 															{
 																ctor: '::',
-																_0: 'Memory address',
+																_0: 'Function as data',
 																_1: {
 																	ctor: '::',
-																	_0: 'In real life, we always create new data',
+																	_0: 'Lambda expression (Arrow function)',
 																	_1: {
 																		ctor: '::',
-																		_0: 'Old data becomes history',
-																		_1: {ctor: '[]'}
+																		_0: 'Higher order functions',
+																		_1: {
+																			ctor: '::',
+																			_0: '&map, filter, reduce...',
+																			_1: {
+																				ctor: '::',
+																				_0: 'Go fully functional in JavaScript, not so much in C#/Java',
+																				_1: {ctor: '[]'}
+																			}
+																		}
 																	}
 																}
 															}),
@@ -9673,18 +9717,34 @@ var _user$project$Models$initialModel = {
 															ctor: '::',
 															_0: A3(
 																_user$project$Models$Page,
-																'Give up computer specific features',
+																'JavaScript frameworks',
 																'',
 																{
 																	ctor: '::',
-																	_0: 'Assembly -> C, no more direct CPU instructions',
+																	_0: 'jQuery, Backbone (MVC)',
 																	_1: {
 																		ctor: '::',
-																		_0: 'C -> C#/Java, no more direct pointer manipulation',
+																		_0: '&You render the view yourself',
 																		_1: {
 																			ctor: '::',
-																			_0: 'Imperative -> Functional, no more state change',
-																			_1: {ctor: '[]'}
+																			_0: 'MVVM (2-way data binding)',
+																			_1: {
+																				ctor: '::',
+																				_0: '&Knockout, Ember, Angular 1, Aurelia',
+																				_1: {
+																					ctor: '::',
+																					_0: 'Unidirectional data flow + Immutable state',
+																					_1: {
+																						ctor: '::',
+																						_0: '&React, Angular 2, Vue, Cycle',
+																						_1: {
+																							ctor: '::',
+																							_0: '&Redux (Elm Architecture), purely functional',
+																							_1: {ctor: '[]'}
+																						}
+																					}
+																				}
+																			}
 																		}
 																	}
 																}),
@@ -9692,32 +9752,32 @@ var _user$project$Models$initialModel = {
 																ctor: '::',
 																_0: A3(
 																	_user$project$Models$Page,
-																	'Can OOP be functional?',
+																	'Unidirectional data flow',
 																	'',
 																	{
 																		ctor: '::',
-																		_0: 'An add-on to imperative language',
+																		_0: '2 half circles',
 																		_1: {
 																			ctor: '::',
-																			_0: 'Static type system',
+																			_0: '&State => View',
 																			_1: {
 																				ctor: '::',
-																				_0: 'Divide and conquer, better structure, worse state management',
+																				_0: '&View => State (action, reducer, global state)',
 																				_1: {
 																					ctor: '::',
-																					_0: 'Encapsulation (black box, hide implementation detail)',
+																					_0: 'Redux (Elm Architecture), purely functional',
 																					_1: {
 																						ctor: '::',
-																						_0: 'No discipline, no confidence',
+																						_0: '&React + Redux',
 																						_1: {
 																							ctor: '::',
-																							_0: 'Stateful (fields = shared states, methods not pure)',
+																							_0: '&Angular 2 + ngrx',
 																							_1: {
 																								ctor: '::',
-																								_0: 'Pure class = utility class (Math)',
+																								_0: '&Vue + Vuex',
 																								_1: {
 																									ctor: '::',
-																									_0: 'OOP and FP co-exist',
+																									_0: '&Cycle + MVI',
 																									_1: {ctor: '[]'}
 																								}
 																							}
@@ -9731,21 +9791,29 @@ var _user$project$Models$initialModel = {
 																	ctor: '::',
 																	_0: A3(
 																		_user$project$Models$Page,
-																		'Why FP not popular in the past',
+																		'React',
 																		'',
 																		{
 																			ctor: '::',
-																			_0: 'More memory consumption',
+																			_0: 'State => View, Virtual DOM',
 																			_1: {
 																				ctor: '::',
-																				_0: 'Multi-core/Parallel programming',
+																				_0: '&Produce a DOM tree data structure',
 																				_1: {
 																					ctor: '::',
-																					_0: 'OOP dominance',
+																					_0: '&Diff 2 virtual DOMs with immutable state',
 																					_1: {
 																						ctor: '::',
-																						_0: 'Getting popular thanks to JavaScript and open source',
-																						_1: {ctor: '[]'}
+																						_0: '&JSX',
+																						_1: {
+																							ctor: '::',
+																							_0: 'Components',
+																							_1: {
+																								ctor: '::',
+																								_0: '&Stateful (OOP) components and Stateless (FP) components',
+																								_1: {ctor: '[]'}
+																							}
+																						}
 																					}
 																				}
 																			}
@@ -9754,103 +9822,35 @@ var _user$project$Models$initialModel = {
 																		ctor: '::',
 																		_0: A3(
 																			_user$project$Models$Page,
-																			'What makes FP possible',
-																			'',
-																			{
-																				ctor: '::',
-																				_0: 'Function as data',
-																				_1: {
-																					ctor: '::',
-																					_0: 'Lambda expression',
-																					_1: {
-																						ctor: '::',
-																						_0: 'Higher order functions',
-																						_1: {
-																							ctor: '::',
-																							_0: '&map, filter, reduce...',
-																							_1: {
-																								ctor: '::',
-																								_0: 'Do FP in imperative languages',
-																								_1: {
-																									ctor: '::',
-																									_0: 'Go fully functional in JavaScript, not so much in C#/Java',
-																									_1: {ctor: '[]'}
-																								}
-																							}
-																						}
-																					}
-																				}
-																			}),
+																			'React - Single Component',
+																			'&yI4zmSIlzXiIIKrG8bnZ',
+																			{ctor: '[]'}),
 																		_1: {
 																			ctor: '::',
 																			_0: A3(
 																				_user$project$Models$Page,
-																				'JavaScript frameworks',
-																				'',
-																				{
-																					ctor: '::',
-																					_0: 'jQuery, Backbone (MVC)',
-																					_1: {
-																						ctor: '::',
-																						_0: '&You render the view yourself',
-																						_1: {
-																							ctor: '::',
-																							_0: 'MVVM (2-way data binding)',
-																							_1: {
-																								ctor: '::',
-																								_0: '&Knockout, Ember, Angular 1, Aurelia',
-																								_1: {
-																									ctor: '::',
-																									_0: 'Unidirectional data flow + Immutable state',
-																									_1: {
-																										ctor: '::',
-																										_0: '&Redux (Elm Architecture), purely functional',
-																										_1: {
-																											ctor: '::',
-																											_0: '&React, Angular 2, Vue, Cycle',
-																											_1: {ctor: '[]'}
-																										}
-																									}
-																								}
-																							}
-																						}
-																					}
-																				}),
+																				'React - Multi Components',
+																				'&jumXaa80otFu3rRZvcNl',
+																				{ctor: '[]'}),
 																			_1: {
 																				ctor: '::',
 																				_0: A3(
 																					_user$project$Models$Page,
-																					'React',
+																					'Redux',
 																					'',
 																					{
 																						ctor: '::',
-																						_0: 'State -> View, Virtual DOM',
+																						_0: 'Single global store',
 																						_1: {
 																							ctor: '::',
-																							_0: '&Produce a DOM tree data structure',
+																							_0: 'Events -> Actions',
 																							_1: {
 																								ctor: '::',
-																								_0: '&Not imperatively update the DOM directly',
+																								_0: 'Reducer',
 																								_1: {
 																									ctor: '::',
-																									_0: '&Diff 2 virtual DOMs with immutable state',
-																									_1: {
-																										ctor: '::',
-																										_0: '&JSX',
-																										_1: {
-																											ctor: '::',
-																											_0: 'Unidirectional data flow',
-																											_1: {
-																												ctor: '::',
-																												_0: 'Components',
-																												_1: {
-																													ctor: '::',
-																													_0: '&Stateful (OOP) components and Stateless (FP) components',
-																													_1: {ctor: '[]'}
-																												}
-																											}
-																										}
-																									}
+																									_0: '&(state, action) -> state',
+																									_1: {ctor: '[]'}
 																								}
 																							}
 																						}
@@ -9859,35 +9859,67 @@ var _user$project$Models$initialModel = {
 																					ctor: '::',
 																					_0: A3(
 																						_user$project$Models$Page,
-																						'React - Single Component',
-																						'&yI4zmSIlzXiIIKrG8bnZ',
+																						'React + Redux',
+																						'&PRCmpV0LTyVCRwEcSQIR',
 																						{ctor: '[]'}),
 																					_1: {
 																						ctor: '::',
 																						_0: A3(
 																							_user$project$Models$Page,
-																							'React - Multi Components',
-																							'&jumXaa80otFu3rRZvcNl',
-																							{ctor: '[]'}),
+																							'Redux middlewares',
+																							'',
+																							{
+																								ctor: '::',
+																								_0: 'Redux-thunk',
+																								_1: {
+																									ctor: '::',
+																									_0: 'Redux-promise',
+																									_1: {
+																										ctor: '::',
+																										_0: 'Redux-saga',
+																										_1: {
+																											ctor: '::',
+																											_0: 'Redux-observable',
+																											_1: {ctor: '[]'}
+																										}
+																									}
+																								}
+																							}),
 																						_1: {
 																							ctor: '::',
 																							_0: A3(
 																								_user$project$Models$Page,
-																								'Unidirectional data flow',
+																								'Functional Reactive Programming',
 																								'',
 																								{
 																									ctor: '::',
-																									_0: 'Only Parent component -> Child component',
+																									_0: 'Reactive Programming',
 																									_1: {
 																										ctor: '::',
-																										_0: 'Any other data flow is not allowed',
+																										_0: '&a -> b, a$ -> b$, Observable',
 																										_1: {
 																											ctor: '::',
-																											_0: '&Child -> Parent',
+																											_0: 'Observable vs Promise',
 																											_1: {
 																												ctor: '::',
-																												_0: '&Sibling -> Sibling',
-																												_1: {ctor: '[]'}
+																												_0: '&cancel, retry, debounce...',
+																												_1: {
+																													ctor: '::',
+																													_0: 'Functional Reactive Programming',
+																													_1: {
+																														ctor: '::',
+																														_0: '&Array in the future, lazy',
+																														_1: {
+																															ctor: '::',
+																															_0: 'ReactiveX operators',
+																															_1: {
+																																ctor: '::',
+																																_0: '&map, filter, reduce (scan, fold), combine, merge...',
+																																_1: {ctor: '[]'}
+																															}
+																														}
+																													}
+																												}
 																											}
 																										}
 																									}
@@ -9896,89 +9928,45 @@ var _user$project$Models$initialModel = {
 																								ctor: '::',
 																								_0: A3(
 																									_user$project$Models$Page,
-																									'Redux',
-																									'',
-																									{
-																										ctor: '::',
-																										_0: 'Single global store',
-																										_1: {
-																											ctor: '::',
-																											_0: 'Events -> Actions',
-																											_1: {
-																												ctor: '::',
-																												_0: 'Reducer',
-																												_1: {
-																													ctor: '::',
-																													_0: '&(state, action) -> state',
-																													_1: {ctor: '[]'}
-																												}
-																											}
-																										}
-																									}),
+																									'React + Redux + Redux-Observable',
+																									'&aMJPRyA3a9SOHwOAocGj',
+																									{ctor: '[]'}),
 																								_1: {
 																									ctor: '::',
 																									_0: A3(
 																										_user$project$Models$Page,
-																										'React + Redux',
-																										'&PRCmpV0LTyVCRwEcSQIR',
+																										'React - Final Version - Purely Functional',
+																										'&8kl06czG0QvYPh6ifEWR',
 																										{ctor: '[]'}),
 																									_1: {
 																										ctor: '::',
 																										_0: A3(
 																											_user$project$Models$Page,
-																											'Redux middlewares',
-																											'',
-																											{
-																												ctor: '::',
-																												_0: 'Redux-thunk',
-																												_1: {
-																													ctor: '::',
-																													_0: 'Redux-promise',
-																													_1: {
-																														ctor: '::',
-																														_0: 'Redux-saga',
-																														_1: {
-																															ctor: '::',
-																															_0: 'Redux-observable',
-																															_1: {ctor: '[]'}
-																														}
-																													}
-																												}
-																											}),
+																											'AutoComplete',
+																											'&X9shFacgc7dgGmLs3Vjr',
+																											{ctor: '[]'}),
 																										_1: {
 																											ctor: '::',
 																											_0: A3(
 																												_user$project$Models$Page,
-																												'Functional Reactive Programming',
+																												'Angular 2',
 																												'',
 																												{
 																													ctor: '::',
-																													_0: 'Reactive Programming',
+																													_0: 'Change detection',
 																													_1: {
 																														ctor: '::',
-																														_0: '&a -> b, a$ -> b$, Observable',
+																														_0: '&Component tree',
 																														_1: {
 																															ctor: '::',
-																															_0: 'Observable vs Promise',
+																															_0: '&Pure component and immutable state',
 																															_1: {
 																																ctor: '::',
-																																_0: '&cancel, retry, debounce...',
+																																_0: 'Both unidirectional data flow and 2-way data binding',
 																																_1: {
 																																	ctor: '::',
-																																	_0: 'Functional Reactive Programming',
-																																	_1: {
-																																		ctor: '::',
-																																		_0: '&Array in the future, lazy',
-																																		_1: {
-																																			ctor: '::',
-																																			_0: 'ReactiveX operators',
-																																			_1: {
-																																				ctor: '::',
-																																				_0: '&map, filter, reduce (scan, fold), combine, merge...',
-																																				_1: {ctor: '[]'}
-																																			}
-																																		}
-																																	}
+																																	_0: 'Built-in Observable support',
+																																	_1: {ctor: '[]'}
 																																}
 																															}
 																														}
@@ -9988,184 +9976,144 @@ var _user$project$Models$initialModel = {
 																												ctor: '::',
 																												_0: A3(
 																													_user$project$Models$Page,
-																													'React + Redux + Redux-Observable',
-																													'&aMJPRyA3a9SOHwOAocGj',
+																													'Angular 2 - Demo',
+																													'&y5iDpMJ6VVWwfHRBmiNA',
 																													{ctor: '[]'}),
 																												_1: {
 																													ctor: '::',
 																													_0: A3(
 																														_user$project$Models$Page,
-																														'React - Final Version - Purely Functional',
-																														'&8kl06czG0QvYPh6ifEWR',
-																														{ctor: '[]'}),
+																														'Vue',
+																														'',
+																														{
+																															ctor: '::',
+																															_0: 'Change tracking',
+																															_1: {
+																																ctor: '::',
+																																_0: '&turn fields into getter/setter',
+																																_1: {
+																																	ctor: '::',
+																																	_0: 'mutable state',
+																																	_1: {
+																																		ctor: '::',
+																																		_0: 'Both unidirectional data flow and 2-way data binding',
+																																		_1: {
+																																			ctor: '::',
+																																			_0: 'Vuex, Vue\'s version of Redux',
+																																			_1: {ctor: '[]'}
+																																		}
+																																	}
+																																}
+																															}
+																														}),
 																													_1: {
 																														ctor: '::',
 																														_0: A3(
 																															_user$project$Models$Page,
-																															'AutoComplete',
-																															'&X9shFacgc7dgGmLs3Vjr',
-																															{ctor: '[]'}),
-																														_1: {
-																															ctor: '::',
-																															_0: A3(
-																																_user$project$Models$Page,
-																																'Angular 2',
-																																'',
-																																{
+																															'Cycle',
+																															'',
+																															{
+																																ctor: '::',
+																																_0: 'Everything is Observable',
+																																_1: {
 																																	ctor: '::',
-																																	_0: 'Change detection',
+																																	_0: 'Purely functional',
 																																	_1: {
 																																		ctor: '::',
-																																		_0: '&Component tree',
+																																		_0: 'Side effects handled by drivers',
 																																		_1: {
 																																			ctor: '::',
-																																			_0: '&Pure component and immutable state',
+																																			_0: 'Events (input) -> Effects (output)',
 																																			_1: {
 																																				ctor: '::',
-																																				_0: 'Both unidirectional data flow and 2-way data binding',
+																																				_0: 'Virtual DOM',
 																																				_1: {
 																																					ctor: '::',
-																																					_0: 'Built-in Observable support',
+																																					_0: 'Model-View-Intent, Cycle\'s version of Redux',
 																																					_1: {ctor: '[]'}
 																																				}
 																																			}
 																																		}
 																																	}
-																																}),
+																																}
+																															}),
+																														_1: {
+																															ctor: '::',
+																															_0: A3(
+																																_user$project$Models$Page,
+																																'Cycle - Demo',
+																																'&JdvAwZStWs11nSKQ5ezA',
+																																{ctor: '[]'}),
 																															_1: {
 																																ctor: '::',
 																																_0: A3(
 																																	_user$project$Models$Page,
-																																	'Angular 2 - Demo',
-																																	'&y5iDpMJ6VVWwfHRBmiNA',
-																																	{ctor: '[]'}),
-																																_1: {
-																																	ctor: '::',
-																																	_0: A3(
-																																		_user$project$Models$Page,
-																																		'Vue 2',
-																																		'',
-																																		{
+																																	'Elm',
+																																	'',
+																																	{
+																																		ctor: '::',
+																																		_0: 'Purely functional programming language',
+																																		_1: {
 																																			ctor: '::',
-																																			_0: 'Change tracking',
+																																			_0: 'Compile to JavaScript',
 																																			_1: {
 																																				ctor: '::',
-																																				_0: '&turn fields into getter/setter',
+																																				_0: 'Statically typed',
 																																				_1: {
 																																					ctor: '::',
-																																					_0: 'mutable state',
+																																					_0: '&Record (Object without methods)',
 																																					_1: {
 																																						ctor: '::',
-																																						_0: 'Both unidirectional data flow and 2-way data binding',
+																																						_0: 'No runtime exception',
 																																						_1: {
 																																							ctor: '::',
-																																							_0: 'Vuex, Vue\'s version of Redux',
+																																							_0: 'Elm Architecture, influenced Redux',
 																																							_1: {ctor: '[]'}
 																																						}
 																																					}
 																																				}
 																																			}
-																																		}),
+																																		}
+																																	}),
+																																_1: {
+																																	ctor: '::',
+																																	_0: A3(
+																																		_user$project$Models$Page,
+																																		'Elm - Demo',
+																																		'$4N9WmyTMDCFa1',
+																																		{ctor: '[]'}),
 																																	_1: {
 																																		ctor: '::',
 																																		_0: A3(
 																																			_user$project$Models$Page,
-																																			'Cycle',
+																																			'Summary',
 																																			'',
 																																			{
 																																				ctor: '::',
-																																				_0: 'Everything is Observable',
+																																				_0: 'Learn Redux (unidirectional data flow, Immutable state)',
 																																				_1: {
 																																					ctor: '::',
-																																					_0: 'Purely functional',
+																																					_0: 'React + Redux, very functional, strong community',
 																																					_1: {
 																																						ctor: '::',
-																																						_0: 'Side effects handled by drivers',
+																																						_0: 'Ramda (functional version of Underscore/Lodash)',
 																																						_1: {
 																																							ctor: '::',
-																																							_0: 'Virtual DOM',
+																																							_0: 'Get ready for the functional programming take-over!',
 																																							_1: {
 																																								ctor: '::',
-																																								_0: 'Model-View-Intent, Cycle\'s version of Redux',
-																																								_1: {ctor: '[]'}
+																																								_0: '&https://ln613.github.io/fp-talk/',
+																																								_1: {
+																																									ctor: '::',
+																																									_0: '&Nan Li, ln613@hotmail.com',
+																																									_1: {ctor: '[]'}
+																																								}
 																																							}
 																																						}
 																																					}
 																																				}
 																																			}),
-																																		_1: {
-																																			ctor: '::',
-																																			_0: A3(
-																																				_user$project$Models$Page,
-																																				'Cycle - Demo',
-																																				'&JdvAwZStWs11nSKQ5ezA',
-																																				{ctor: '[]'}),
-																																			_1: {
-																																				ctor: '::',
-																																				_0: A3(
-																																					_user$project$Models$Page,
-																																					'Elm',
-																																					'',
-																																					{
-																																						ctor: '::',
-																																						_0: 'Purely functional programming language',
-																																						_1: {
-																																							ctor: '::',
-																																							_0: 'Compile to JavaScript',
-																																							_1: {
-																																								ctor: '::',
-																																								_0: 'Statically typed',
-																																								_1: {
-																																									ctor: '::',
-																																									_0: '&Record (Object without methods)',
-																																									_1: {
-																																										ctor: '::',
-																																										_0: 'No runtime exception',
-																																										_1: {
-																																											ctor: '::',
-																																											_0: 'Elm Architecture, influenced Redux',
-																																											_1: {ctor: '[]'}
-																																										}
-																																									}
-																																								}
-																																							}
-																																						}
-																																					}),
-																																				_1: {
-																																					ctor: '::',
-																																					_0: A3(
-																																						_user$project$Models$Page,
-																																						'Elm - Demo',
-																																						'$4N9WmyTMDCFa1',
-																																						{ctor: '[]'}),
-																																					_1: {
-																																						ctor: '::',
-																																						_0: A3(
-																																							_user$project$Models$Page,
-																																							'Summary',
-																																							'',
-																																							{
-																																								ctor: '::',
-																																								_0: 'React is the best choice for now',
-																																								_1: {
-																																									ctor: '::',
-																																									_0: 'https://ln613.github.io/fp-talk/',
-																																									_1: {
-																																										ctor: '::',
-																																										_0: 'Nan Li',
-																																										_1: {
-																																											ctor: '::',
-																																											_0: 'ln613@hotmail.com',
-																																											_1: {ctor: '[]'}
-																																										}
-																																									}
-																																								}
-																																							}),
-																																						_1: {ctor: '[]'}
-																																					}
-																																				}
-																																			}
-																																		}
+																																		_1: {ctor: '[]'}
 																																	}
 																																}
 																															}
