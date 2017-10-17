@@ -3,14 +3,18 @@
   "version": "1.0.0",
   "description": "JavaScript and the Rise of Functional Programming",
   "author": "Nan Li",
-  "main": "dist/main.js",
+  "homepage": "https://ln613.github.io/fp-talk",
   "scripts": {
-    "start": "webpack-dev-server --port 412"
+    "start": "webpack-dev-server --port 412",
+    "build": "webpack",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "devDependencies": {
     "css-loader": "^0.26.1",
     "elm-webpack-loader": "^4.2.0",
     "file-loader": "^0.10.0",
+    "gh-pages": "^1.0.0",
     "style-loader": "^0.13.1",
     "url-loader": "^0.5.7",
     "webpack": "^2.2.1",
